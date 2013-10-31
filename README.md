@@ -3,11 +3,12 @@ UpgradePHP
 
 This is Git clone of the amazing UpgradePHP project. It's a shim/polyfill for PHP 5.3/5.4 functions for PHP 4.1 and higher installations. I wanted it on Git since I mostly work via Git and not the fossil DVCS. 
 
-Version: 18.1
-Official Site: http://include-once.org/p/upgradephp
-Official Repository: http://fossil.include-once.org/upgradephp
+- Version: 18.1
+- Official Site: http://include-once.org/p/upgradephp
+- Official Repository: http://fossil.include-once.org/upgradephp
 
-Without further ado, here's their explanation copied:
+Explanation
+-----------
 
 With 'upgrade.php' on-hand, you can use many features from newer PHP versions (up to 5.3/5.4 currently) without losing compatibility to older interpreters and outdated webserver setups. It takes care of emulating any functions (with their original names) that are missing at runtime.
 
