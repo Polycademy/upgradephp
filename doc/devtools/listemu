@@ -1,0 +1,27 @@
+#!/usr/bin/php -q
+<?php
+/*
+   Prints the list of emulated functions.
+*/
+
+#-- basedir
+$dir = dirname(dirname(dirname(__FILE__)));
+
+#-- read files
+$text = file_get_contents("$dir/upgrade.php");
+foreach (glob("$dir/ext/*.php") as $add) {
+   $text .= file_get_contents($add);
+}
+
+#-- grep
+if (preg_match_all("/function[ ]+([_\w\d]+)\s*\(/", $text, $uu)) {
+   $list = array_unique($uu[1]);
+}
+
+#-- print
+echo "Following functions can be emulated currently:\n";
+foreach ($list as $func) {
+   echo "· $func\n";
+}
+
+?>

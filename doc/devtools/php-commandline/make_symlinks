@@ -1,0 +1,126 @@
+#!/bin/sh
+
+SCRIPT=PhpFunctionCall
+FUNCS="json_encode json_decode inet_ntop inet_pton error_get_last strptime
+htmlspecialchars_decode zend_version strlen strcmp strncmp strcasecmp
+strncasecmp each error_reporting define defined get_parent_class
+method_exists class_exists interface_exists function_exists
+get_included_files get_required_files is_subclass_of is_a get_class_vars
+get_object_vars get_class_methods trigger_error user_error set_error_handler
+restore_error_handler set_exception_handler restore_exception_handler
+get_declared_classes get_declared_interfaces get_defined_functions
+get_defined_vars create_function get_resource_type get_loaded_extensions
+extension_loaded get_extension_funcs get_defined_constants debug_backtrace
+debug_print_backtrace xmlrpc_encode xmlrpc_decode xmlrpc_decode_request
+xmlrpc_encode_request xmlrpc_get_type xmlrpc_set_type xmlrpc_is_fault
+utf8_encode utf8_decode token_get_all token_name constant bin2hex sleep
+usleep time_nanosleep time mktime gmmktime strftime gmstrftime strtotime
+date idate gmdate getdate localtime checkdate flush wordwrap
+htmlspecialchars htmlentities html_entity_decode get_html_translation_table
+sha1 sha1_file md5 md5_file crc32 iptcparse iptcembed getimagesize
+image_type_to_mime_type phpinfo phpversion phpcredits php_logo_guid
+php_real_logo_guid php_egg_logo_guid zend_logo_guid php_sapi_name php_uname
+php_ini_scanned_files strnatcmp strnatcasecmp substr_count strspn strcspn
+strtok strtoupper strtolower strpos stripos strrpos strripos strrev hebrev
+hebrevc nl2br basename dirname pathinfo stripslashes stripcslashes strstr
+stristr strrchr str_shuffle str_word_count str_split strpbrk substr_compare
+strcoll money_format substr substr_replace quotemeta ucfirst ucwords strtr
+addslashes addcslashes rtrim str_replace str_ireplace str_repeat count_chars
+chunk_split trim ltrim strip_tags similar_text explode implode setlocale
+localeconv nl_langinfo soundex levenshtein chr ord parse_str str_pad chop
+strchr sprintf printf vprintf vsprintf fprintf vfprintf sscanf fscanf
+parse_url urlencode urldecode rawurlencode rawurldecode http_build_query
+readlink linkinfo symlink link unlink exec system escapeshellcmd
+escapeshellarg passthru shell_exec proc_open proc_close proc_terminate
+proc_get_status proc_nice rand srand getrandmax mt_rand mt_srand
+mt_getrandmax getservbyname getservbyport getprotobyname getprotobynumber
+getmyuid getmygid getmypid getmyinode getlastmod base64_decode base64_encode
+convert_uuencode convert_uudecode abs ceil floor round sin cos tan asin acos
+atan atan2 sinh cosh tanh asinh acosh atanh expm1 log1p pi is_finite is_nan
+is_infinite pow exp log log10 sqrt hypot deg2rad rad2deg bindec hexdec
+octdec decbin decoct dechex base_convert number_format fmod ip2long long2ip
+getenv putenv getopt microtime gettimeofday getrusage uniqid
+quoted_printable_decode convert_cyr_string get_current_user set_time_limit
+get_cfg_var get_magic_quotes_gpc get_magic_quotes_runtime
+import_request_variables error_log call_user_func call_user_func_array
+call_user_method call_user_method_array serialize unserialize var_dump
+var_export debug_zval_dump print_r unregister_tick_function highlight_file
+show_source highlight_string php_strip_whitespace php_check_syntax ini_get
+ini_get_all ini_set ini_alter ini_restore get_include_path set_include_path
+restore_include_path setcookie setrawcookie header headers_sent headers_list
+connection_aborted connection_status ignore_user_abort parse_ini_file
+is_uploaded_file move_uploaded_file gethostbyaddr gethostbyname
+gethostbynamel dns_check_record checkdnsrr dns_get_mx getmxrr dns_get_record
+intval floatval doubleval strval gettype settype is_null is_resource is_bool
+is_long is_float is_int is_integer is_double is_real is_numeric is_string
+is_array is_object is_scalar is_callable ereg ereg_replace eregi
+eregi_replace split spliti join sql_regcase dl pclose popen readfile rewind
+rmdir umask fclose feof fgetc fgets fgetss fread fopen fpassthru ftruncate
+fstat fseek ftell fflush fwrite fputs mkdir rename copy tempnam tmpfile file
+file_get_contents file_put_contents fgetcsv flock get_meta_tags
+set_file_buffer get_headers realpath fnmatch fsockopen pfsockopen pack
+unpack get_browser crypt opendir closedir chdir chroot getcwd rewinddir
+readdir dir scandir glob fileatime filectime filegroup fileinode filemtime
+fileowner fileperms filesize filetype file_exists is_writable is_writeable
+is_readable is_executable is_file is_dir is_link stat lstat chown chgrp
+chmod touch clearstatcache disk_total_space disk_free_space diskfreespace
+mail ezmlm_hash openlog syslog closelog define_syslog_variables lcg_value
+metaphone ob_start ob_flush ob_clean ob_end_flush ob_end_clean ob_get_flush
+ob_get_clean ob_get_length ob_get_level ob_get_status ob_get_contents
+ob_implicit_flush ob_list_handlers ksort krsort natsort natcasesort asort
+arsort sort rsort usort uasort uksort shuffle array_walk
+array_walk_recursive count end prev next reset current key min max in_array
+array_search extract compact array_fill range array_multisort array_push
+array_pop array_shift array_unshift array_splice array_slice array_merge
+array_merge_recursive array_keys array_values array_count_values
+array_reverse array_reduce array_pad array_flip array_change_key_case
+array_rand array_unique array_intersect array_uintersect
+array_intersect_assoc array_uintersect_assoc array_intersect_uassoc
+array_uintersect_uassoc array_diff array_udiff array_diff_assoc
+array_udiff_assoc array_diff_uassoc array_udiff_uassoc array_sum
+array_filter array_map array_chunk array_combine array_key_exists pos sizeof
+key_exists assert assert_options version_compare ftok str_rot13
+stream_get_filters output_add_rewrite_var output_reset_rewrite_vars
+date_sunrise date_sunset spl_classes class_parents class_implements
+use_soap_error_handler is_soap_fault simplexml_load_file
+simplexml_load_string simplexml_import_dom session_name session_module_name
+session_save_path session_id session_regenerate_id session_decode
+session_register session_unregister session_is_registered session_encode
+session_start session_destroy session_unset session_set_save_handler
+session_cache_limiter session_cache_expire session_set_cookie_params
+session_get_cookie_params session_write_close session_commit posix_kill
+posix_getpid posix_getppid posix_getuid posix_setuid posix_geteuid
+posix_seteuid posix_getgid posix_setgid posix_getegid posix_setegid
+posix_getgroups posix_getlogin posix_getpgrp posix_setsid posix_setpgid
+posix_getpgid posix_getsid posix_uname posix_times posix_ctermid
+posix_ttyname posix_isatty posix_getcwd posix_mkfifo posix_getgrnam
+posix_getgrgid posix_getpwnam posix_getpwuid posix_getrlimit
+posix_get_last_error posix_errno posix_strerror preg_match preg_match_all
+preg_replace preg_replace_callback preg_split preg_quote preg_grep
+pcntl_fork pcntl_waitpid pcntl_wait pcntl_signal pcntl_wifexited
+pcntl_wifstopped pcntl_wifsignaled pcntl_wexitstatus pcntl_wtermsig
+pcntl_wstopsig pcntl_exec pcntl_alarm pcntl_getpriority pcntl_setpriority
+mime_content_type iconv ob_iconv_handler iconv_get_encoding
+iconv_set_encoding iconv_strlen iconv_substr iconv_strpos iconv_strrpos
+iconv_mime_encode iconv_mime_decode iconv_mime_decode_headers gd_info
+imagetypes jpeg2wbmp png2wbmp image2wbmp imagelayereffect imagecolormatch
+imagefilter dom_import_simplexml ctype_alnum ctype_alpha ctype_cntrl
+ctype_digit ctype_lower ctype_graph ctype_print ctype_punct ctype_space
+ctype_upper ctype_xdigit readgzfile gzrewind gzclose gzeof gzgetc gzgets
+gzgetss gzread gzopen gzpassthru gzseek gztell gzwrite gzputs gzfile
+gzcompress gzuncompress gzdeflate gzinflate gzencode ob_gzhandler
+zlib_get_coding_type"
+
+
+# start
+if [ -e $SCRIPT ]
+then
+
+   for F in $FUNCS
+   do
+
+      ln -s $SCRIPT $F
+
+   done
+
+fi

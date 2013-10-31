@@ -1,0 +1,530 @@
+
+PHP downwards compatibility functions
+-------------------------------------
+The "upgrade.php" package implements features and functions from
+newer PHP versions. It defines them as pure PHP code. Functions
+get defined dynamically defines, at runtime. All emulated functions
+use names identical to the original implementation. But it doesn't
+perturb if the native functions exist.
+
+So this is really a drop-in replacement. It allows you to use all
+PHP features regardless of the current PHP interpreter. You just
+have to include() this single script to remove any backward
+compatibility woes.
+This allows relying on the newer, more powerful PHP functions. The
+use and retyping of workarounds gets superfluous. Your application
+remains "PHP 4.1+ COMPATIBLE" while actually using PHP5.2 features.
+
+
+this is useful:
+
+- for open source distributions
+- if your own providers PHP version is immemorial
+- you want to test new functions, but not install a new PHP ver
+- usage of gettext/bcmath/ftp/... extension would be nice in your
+  project, but may not be available on all target web servers
+- if some other PHP project has a unmet dependency on your server
+- you have a sourceforge.net project homepage ;-)
+
+
+when it cannot help:
+
+- extended PHP5 object-orientation semantics can't be emulated
+- function signatures in newer PHP versions also sometimes change,
+  and these cannot be overriden or extended by upgradephp
+- doesn't help against amateur providers safe_mode
+- compatibility with PHP<4.0 cannot be reached
+
+
+other things to note:
+
+- as already said, speed won't suffer on up-to-date servers, because
+  functions are only emulated/defined if they are missing
+- some functions are just simple stubs
+- emulated functions are mostly slower than the native would be,
+  of course
+- not all PHP errors are exactly mimicked,
+  -> upgradephp leaves this often to parent functions (e.g. fopen)
+  -> and you probably test for errors on the native PHP anyhow
+     (no practical need to have that in emulation mode)
+- memory shouldn't increase significantly, because if(func_exists)
+  "interpretes away" most code 
+
+
+Remember that native functions will be used whereever available,
+this emulation just helps getting scripts run on aging PHP versions.
+
+
+
+      PEAR::PHP_Compat
+      ----------------
+      Alternatively to the "upgradephp" package, you could also give
+      the PEAR package "PHP_Compat" (by Aidan Lister & Co.) from
+      [http://pear.php.net/] a try. It comes under the LGPL license
+      and contains more PHP4.0 emulation (what's not targetted anymore
+      in upgrade.php).
+      You could even use it in conjunction with upgrade.php
+
+      Note: no code from PHP_Compat has been reused here (this is more
+      a license thing, than NIH syndrome).
+
+
+
+Usage
+-----
+Simply include("upgrade.php"); in any of your scripts, if you want
+to rely on some PHP4.3 or PHP5.2 functions.
+
+   include("upgrade.php");
+
+You could additionally check the PHP_VERSION, and only include the
+emulation wrapper if you depend on features from a certain PHP
+interpreter release:
+
+  <?example
+     if (PHP_VERSION < "4.4.0") { include(".../upgrade.php"); }
+  ?>
+
+Currently following functions can be emulated:
+· json_encode
+· json_decode
+· strptime
+· gzdecode
+· htmlspecialchars_decode
+· fputcsv
+· ob_get_headers
+· xmlentities
+· stripos
+· strripos
+· str_ireplace
+· get_headers
+· headers_list
+· fprintf
+· vfprintf
+· str_split
+· http_build_query
+· convert_uuencode
+· convert_uudecode
+· scandir
+· idate
+· time_nanosleep
+· strpbrk
+· php_real_logo_guid
+· php_egg_logo_guid
+· get_declared_interfaces
+· array_combine
+· array_walk_recursive
+· substr_compare
+· spl_classes
+· class_parents
+· session_commit
+· dns_check_record
+· dns_get_mx
+· setrawcookie
+· file_put_contents
+· count_recursive
+· file_get_contents
+· fnmatch
+· glob
+· array_key_exists
+· array_intersect_assoc
+· array_diff_assoc
+· html_entity_decode
+· str_word_count
+· str_shuffle
+· get_include_path
+· set_include_path
+· restore_include_path
+· str_rot13
+· array_change_key_case
+· array_fill
+· array_chunk
+· md5_file
+· is_a
+· fmod
+· floatval
+· is_infinite
+· is_nan
+· is_finite
+· var_export
+· strcoll
+· diskfreespace
+· disktotalspace
+· vprintf
+· vsprintf
+· import_request_variables
+· hypot
+· log1p
+· expm1
+· sinh
+· cosh
+· tanh
+· asinh
+· acosh
+· atanh
+· mhash
+· mhash_count
+· mhash_get_hash_name
+· mhash_get_block_size
+· array_udiff_uassoc
+· array_udiff_assoc
+· array_diff_uassoc
+· array_udiff
+· array_uintersect_uassoc
+· array_uintersect_assoc
+· array_uintersect
+· array_intersect_uassoc
+· dc___exec
+· bcscale
+· bcadd
+· bcsub
+· bcmul
+· bcdiv
+· bcmod
+· bcpow
+· bcpowmod
+· bcsqrt
+· bccomp
+· bc___scaledown
+· gettext
+· gettext___plural_guess
+· ngettext
+· dngettext
+· dcngettext
+· dcgettext
+· dgettext
+· textdomain
+· bindtextdomain
+· gettext___load_mo
+· gettext___load_po
+· bind_textdomain_codeset
+· _
+· mime_content_type
+· image_type_to_mime_type
+· image_type_to_extension
+· exif_imagetype
+· array_filter
+· array_map
+· is_callable
+· array_search
+· array_reduce
+· is_scalar
+· localeconv
+· call_user_func_array
+· call_user_method_array
+· array_sum
+· constant
+· is_null
+· pathinfo
+· escapeshellarg
+· is_uploaded_file
+· move_uploaded_file
+· strncasecmp
+· wordwrap
+· php_uname
+· php_sapi_name
+· posix_mkfifo
+· posix_getcwd
+· posix_kill
+· posix_uname
+· ctype_alnum
+· ctype_alpha
+· ctype_digit
+· ctype_xdigit
+· ctype_cntrl
+· ctype_space
+· ctype_upper
+· ctype_lower
+· ctype_graph
+· ctype_punct
+· ctype_print
+· odbc_connect
+· odbc_pconnect
+· odbc_close
+· odbc_exec
+· odbc_do
+· odbc_prepare
+· odbc_execute
+· odbc_fetch_array
+· odbc_fetch_row
+· odbc_fetch_object
+· odbc_fetch_into
+· odbc_free_result
+· odbc_next_result
+· odbc_num_fields
+· odbc_num_rows
+
+
+Redistribution
+--------------
+You are encouraged to distribute "upgrade.php" together with
+other / your projects. That's also why it was released as Public
+Domain (=compatible to ALL open source licenses, including the
+GNU GPL and LGPL).
+
+You could load it automatically then using the PHP_VERSION check.
+Or simply leave this to your users if they use an older PHP version.
+A note often suffices.
+
+Of course you might want to distribute only "upgrade.php" and any
+required ext/ module. Just purge the rest (dtools/ and contrib/ or
+this README), because they probably make little sense distributed
+alongside elsewhere.
+
+It is also safe to extract a few function bodies/definitions out of
+upgrade.php to make a shorter version (load only the needed funcs).
+But you should keep the "if (function_exists(...))" wrapper code
+preferrably.
+PHP_Compat however might make a better source, if you really need
+just one or two functions.
+
+
+Omissions
+---------
+A few PHP features are specifically NOT implemented, and so still
+had to be taken care of in your scripts:
+
+· predefined STDIN, STDOUT and STDERR constants
+· UPLOAD_ERR_* constants (introduced with 4.2, officially 4.3)
+· ob_* (eventually possible)
+· ini_get_all (ingenious trick in PHP_Compat)
+
+Some of these functions and other esoteric code is implemented
+in the ext/ scripts:
+
+
+ext/
+----
+The ext/ subdirectory in here provides a few more or less useful
+emulations for various PHP extensions or function groups.
+
+· "ext/php40array" provides a few exotic array diff functions (for
+  associative arrays and for using multiple callback functions)
+
+· "ext/exotic" contains some rarely needed functions, which have
+  been removed from the main file for that and other reasons
+
+· "ext/bcmath" provides the mathematical functions with arbitrary
+  precision on Unix systems, but emulation also works on top of
+  GMP or big_int
+
+· "ext/dba" allows you to use scripts written for the dba module,
+  if your interpreter only has dbm_*() functions; but only provides
+  the minimum functionality
+
+· "ext/ftp" emulates the ftp extension using only the bare socket
+  and networking functions (should work anywhere), even has some
+  features not found in the original
+
+· "ext/gettext" simulates most of what gettext/libintl provides, and
+  seems to read .mo data files correctly - plural support is however
+  weak. There is also support for .po files, but since the libintl
+  and original gettext functions don't normally read this, that's a
+  useless feature (just for fun). You save 2K by ripping it out.
+
+· "ext/mime" simulates the mime_content_type() function, either by
+  accessing PECL::fileinfo or reading and evaluating the magic.mime
+  database itself (likely slower and a bit unclean of course)
+
+Other snippets in ext/ are probably incomplete or just TODO stubs.
+
+
+doc/devtools/
+-------------
+Please run the "updoc" script once to update your PHP manual, if you
+are planning to use the upgrade.php script. It adds notes to version
+compatibility strings on each page, when an upgradephp equivalent
+exists.
+
+· The "dtools/updoc" commandline script updates your local PHP
+  documentation to carry hints about emulated functions. It'll simply
+  add a small "EMU" on top of the supported functions` description
+  pages (in the line typically listing the PHP versions).
+
+
+The other cmdline scripts are used for developing upgrade.php:
+
+· "ckavail.php" was used to check for added functions between
+   different PHP interpreter versions, purely a development script.
+
+· "dtools/doctests" greps your local PHP manual for function use
+  examples, and executes them with the given PHP interpreter and
+  the "upgrade.php" script loaded of course. This way you get live
+  tests, but also see:
+
+· "dtools/compact" creates a collapsed version of the upgrade.php
+  script (saved into contrib/)
+
+
+
+doc/tests*
+----------
+Contains stupidly short scripts, that have been used to compare
+behaviour of the original functions to that of the emulated ones.
+
+The tests now can be run using PEARs RunTest class. (But not all
+have been updated or proof-checked.)
+
+
+
+ext/contrib/
+------------
+Holds a few library scripts, that will later be reworked to mimick
+other new PHP extensions.
+
+· "contrib/http" can be used to contact Web form scripts, or PHP
+  code utilizing "ext/phprequest" more efficiently. It especially
+  supports content-coding as per RFC2616 (HTTP standard) for saving
+  a lot of bandwidth and getting answers faster.
+
+· "contrib/xmlrpc" likewise can compress output and is used to
+  access XML-RPC and IETF XML+RPC Web services. It takes advantage
+  of supported XML and EPI-XML-RPC extensions, but runs gracefully
+  (not 100% exact XML parser) without. It was also made to provide
+  downwards compatibility. Currently you shouldn't run it against
+  old and not-HTTP standards-compliant servers and clients (=avoid
+  compression unless you use it also as server or client at the
+  other side).
+
+· "contrib/hiddenerrors" shows a nice way to hide all disturbing
+  error messages from users, but keeping them available for
+  development. It is especially useful, when premature _NOTICEs or
+  _WARNINGs could garbage (XML or binary) output or if this could
+  prevent sending any further/required HTTP headers().
+
+· "contrib/fix.php" fights magic_quotes and register_globals
+  (though here it's often better to let users of outdated PHP setups
+  run into the open knife, or die() with an error message)
+
+· "contrib/phprequest" enables your PHP interpreter to receive HTTP
+  requests with "application/vnd.php.serialized" encoding (even
+  compressed) instead of the older "multipart/form-data" and the
+  more simple "application/x-www-form-urlencoded" var post formats;
+  this is faster and type-safe if you control both ends of the wire;
+  see "contrib/README.http" for hints about the upcoming "PHP-RPC"
+
+· "contrib/exceptions" provide a scheme for PHP4-compatible
+  exception management using simple wrapper calls and agreements
+
+Please also have a peek into the README files accompaning the script
+snippets distributed in this directory.
+
+
+
+Other Notes
+-----------
+· This script doesn't reside in any CVS/SVN reposititory currently
+  because it is considered a too minor and small project.
+
+· The project homepage is <http://upgradephp.berlios.de/> but see
+  also <http://freshmeat.net/projects/upgradephp> for any update
+  notifications.
+
+
+
+License
+-------
+Almost all in here is Public Domain. There are no restrictions on how
+or where you could use it. You may redistribute it under any license
+as you wish, and you don't need to tell anyone where you got it from.
+It has absolutely no impact on the rest of YOUR project; you are free
+to include it as if you had written it yourself.
+
+You could prepend the license preamble (GNU GPL, LGPL, BSD, MPL, MSFT
+EULA, PHP, CDDL, Artistic, ...) of your choice if you want to.
+
+Exceptions are the doc/tests* and doc/runtest scripts. Those are under
+the PHP license, taken from PEAR, PECL or PHP.
+
+The "ext/pdo.php" class is from Andrea Giammarchi and under the PHP
+License as well. Also check out http://xpdo.org/ - the origin.
+
+
+Author
+------
+The current maintainer can be contacted under <milky*users·sf·net>
+
+Please drop me a line, regarding omissions, bugs, contributing a few
+bytes...
+
+
+
+ChangeLog
+---------
+
+v18
+  - Anthon Pang contributed mysqli_set_charset() and E_DEPRECATED const
+  - Also contrib/safe_serialize and unserialize() implementations by Anthon
+  - TMPDIR support for sys_get_temp_dir()
+  - gzdecode is now an official PHP 5.4 function.
+  - hex2bin
+  - session_status
+  - zlib_encode / zlib_decode
+  - http_redirect, http_response_code, http_send_content_type
+  - get_declared_traits (stub), class_uses (stub), get_declared_traits (stub)
+  - json_encode: JSON_HEX_AMP, JSON_HEX_TAG, JSON_HEX_APOS, JSON_HEX_QUOT,
+    (5.3.3 addition) JSON_NUMERIC_CHECK,
+    (5.4.0 addition) JSON_PRETTY_PRINT, JSON_UNESCAPED_SLASHES
+    and JSON_UNESCAPED_UNICODE.
+  - json_decode: added flag JSON_BIGINT_AS_STRING, JSON_OBJECT_AS_ARRAY,
+    and the non-standard JSON_PARSE_JAVASCRIPT
+  - basic basic json_last_error() function
+
+v17
+  - new emulation of pspell extension using cmdline tool
+  - escaping fixed in json_encode(), ignores utf-8 now
+  - a few php 5.2 array functions added
+  - str_getcsv, parse_ini_string, quoted_printable_encode
+  - inet_pton, inet_ntop, 
+  - fixes to sys_get_tmp_dir, error_get_last, property_exists, uuencode,
+    get_headers, vprintf, import_request_variables
+  - test-up script is now used for executing documentation tests,
+    old PEAR test script is nonfunctional
+
+v16
+  - json_decode() array-conversion fix by Gerhard (tinned-software.net)
+  - object-oriented input $_REQUEST filter wrapper in contrib/
+  - some old code moved to contrib/archive/
+
+v15
+  - moved to phpDoc comment style,
+    but not all emulated functions carry @param lists
+  - tarball directories restructured
+  - ext/filter ...
+  - json_decode now decodes \uXXXX unicode references
+  - include the PDO emulation classes of Andrea Giammarchi (under PHP License)
+
+v14
+  - initial comment restructuring
+  - added json_encode/decode functions, basic strptime parsing
+  - php5.1 functions fputcsv, property_exists, ... and constants
+  - added dtools/php-commandline/PhpFunctionCall console script
+
+v13
+  - bcmath functions changed to use faster /usr/bin/dc, wrappers for GMP
+    fixed and php_big_int.so usage possible
+  - gettext_plural0 merged into old code and speed improved
+
+v12
+  - strripos() handling of positive offsets was fixed
+  - strpbrk() fixed to not return string, if nothing found
+  - php_strip_whitespace() and php_check_syntax() moved into ext/exotic
+  + ext/bcmath using /usr/bin/bc
+  + initial mhash (HMAC) implementation with MD5 and SHA1
+  + incomplete ext/odbc
+  + ext/exceptions for PHP4
+  + extremely fast but incomplete plural form handling in gettext module
+  - core script rewritten with more exhaustive comments
+
+v11
+  - shortened (whitespace- and comment-free) script was added
+  - first gettext emulation version
+
+v10
+  (unreleased)
+
+...
+  (visit the BerliOS download page and diff it yourself)
+
+v1
+  - initial release (non-public)

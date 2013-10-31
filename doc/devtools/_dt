@@ -1,0 +1,8 @@
+#!/bin/sh
+# runs the `doctests` utility for a given (param) function,
+# simply has some custom pathnames built-in
+MAN=/usr/local/doc/php5-doc/
+PHP=php412
+
+DIR=$(dirname $(dirname $(realpath $0)))
+$DIR/dtools/doctests $PHP $MAN $@

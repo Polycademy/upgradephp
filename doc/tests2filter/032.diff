@@ -1,0 +1,21 @@
+001- array(6) {
+001+ 
+002-   ["product_id"]=>
+003-   string(17) "libgd%3Cscript%3E"
+004-   ["component"]=>
+005-   array(1) {
+006-     [0]=>
+007-     string(17) "10dhsajkkdhk <do>"
+008-   }
+009-   ["versions"]=>
+010-   string(6) "2.0.33"
+011-   ["doesnotexist"]=>
+012-   NULL
+013-   ["testscalar"]=>
+014-   bool(false)
+015-   ["testarray"]=>
+016-   array(1) {
+017-     [0]=>
+018-     int(2)
+019-   }
+020- }

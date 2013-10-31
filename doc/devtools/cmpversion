@@ -1,0 +1,81 @@
+<?php
+/*
+   Run this first with an older PHP interpreter, and then with a newer
+   version. This way you get a list (once) of added functions (the func
+   list is stored in a temporary file).
+*/
+$DATA_FILE = __FILE__.".data";
+
+
+
+#-- load previous list
+$DATA = array();
+if (file_exists($DATA_FILE)) {
+   $DATA = include($DATA_FILE);   // should contain return array(...
+}
+
+#-- current func list
+$DATA[strtok(PHP_VERSION, "-")] = get_defined_stuff();
+ksort($DATA);
+
+#-- save this one
+if ($f = fopen($DATA_FILE, "wb")) {
+   fwrite($f, '<? return ' . var_export($DATA, TRUE) . ';');
+   fclose($f);
+}
+else die("couldn't save back");
+
+
+
+#-- comparison of  current / last run
+print "available versions: " . implode(", ", array_keys($DATA)) . "\n";
+$old_version = @$_SERVER["argv"][1]  or  $old_version = key($DATA);
+$new_version = @$_SERVER["argv"][2]  or  $new_version = PHP_VERSION;
+print "comparing \x1b[31m$old_version\x1b[39m and \x1b[32m$new_version\x1b[39m:\n";
+
+#-- list
+$oldl = $DATA[$old_version];
+$newl = $DATA[$new_version];
+echo "old(".count($oldl["functions"])."), new(".count($newl["functions"]).")\n";
+if ($oldl) {
+
+   #-- funcs
+   $new = array_diff($newl["functions"], $oldl["functions"]);
+   echo "\x1b[32mNew functions:\x1b[39m\n";
+   print_r($new);
+
+   #-- constants
+   $new = array_diff(array_keys($newl["constants"]), array_keys($oldl["constants"]));
+   echo "\n\x1b[32mNewly added constants:\x1b[39m\n";
+   print_r($new);
+
+   #-- classes
+   $new = array_diff($newl["classes"], $oldl["classes"]);
+   echo "\n\x1b[32mAnd classes:\x1b[39m\n";
+   print_r($new);
+
+}
+
+
+
+/**
+ * assemble list of defined functions/etc
+ *
+ */
+function get_defined_stuff() {
+   $rl = array();
+   $f = get_defined_functions();
+   while (@$f["internal"]) {
+      $f = $f["internal"];
+   }
+   $rl["functions"] = $f;
+   $c = get_defined_constants();
+   $rl["constants"] = $c;
+   $c = get_declared_classes();
+   $rl["classes"] = $c;
+   $rl["version"] = PHP_VERSION;
+   return($rl);
+}
+
+
+?>

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+echo "<?php print_r($1); ?>" | php

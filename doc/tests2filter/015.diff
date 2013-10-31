@@ -1,0 +1,29 @@
+001- string(29) "http://example.com/index.html"
+001+ 
+002- string(32) "http://www.example.com/index.php"
+003- string(31) "http://www.example/img/test.png"
+004- string(27) "http://www.example/img/dir/"
+005- string(26) "http://www.example/img/dir"
+006- string(28) "http//www.example/wrong/url/"
+007- string(17) "http:/www.example"
+008- string(18) "file:///tmp/test.c"
+009- string(26) "ftp://ftp.example.com/tmp/"
+010- string(11) "/tmp/test.c"
+011- string(1) "/"
+012- bool(false)
+013- string(6) "http:/"
+014- string(5) "http:"
+015- string(4) "http"
+016- string(0) ""
+017- string(2) "-1"
+018- bool(false)
+019- bool(false)
+020- string(10) "http://qwe"
+021- bool(false)
+022- bool(false)
+023- string(22) "http://www.example.com"
+024- bool(false)
+025- string(42) "http://www.example.com/path/at/the/server/"
+026- bool(false)
+027- string(40) "http://www.example.com/index.php?a=b&c=d"
+028- Done

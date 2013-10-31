@@ -1,0 +1,17 @@
+#!/usr/bin/php
+<?php
+
+
+$fn = $_SERVER["argv"][1];
+
+$src = file_get_contents($fn);
+$src = preg_replace("/\s+include\(.+?\);/ims", "", $src);
+$src = trim($src);
+file_put_contents($fn, $src);
+
+$expect = `php -qC $fn`;
+$src = "--TEST--\n$fn\n--FILE--\n$src\n--EXPECT--\n$expect";
+file_put_contents("$fn.phpt", $src);
+
+
+?>

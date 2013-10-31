@@ -1,0 +1,25 @@
+#!/usr/bin/php -qC
+<?php
+
+   #-- function name
+   $func = $_SERVER["argv"][0];
+   $func = substr($func, strrpos($func, "/") + 1);
+
+   #-- args
+   $args = $_SERVER["argv"];
+   array_shift($args);
+
+   #-- stdin as arg
+   if (!count($args)) {
+      if (($f = fopen("php://stdin", "rb"))
+      and ($input = fread($f, 1<<22))) {
+         array_unshift($args, $input);
+         fclose($f);
+      }
+   }
+
+   #-- do
+   $output = call_user_func_array($func, $args);
+   echo $output;
+
+?>

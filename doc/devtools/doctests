@@ -1,0 +1,230 @@
+#!/usr/bin/php -q
+<?php
+/*
+   Makes small test scripts, which get extracted from the PHP manual
+   on the fly (but not every function has one there, suddenly).
+*/
+
+#-- config
+$PAUSE = 0;   // (use 3) break between tests; you should use `|less` instead
+$CLEAN = 0;   // remove test scripts after use
+$MANY = 1;    // create one testing script per function
+
+
+#-- help
+if (count($_SERVER["argv"]) < 3) {
+   echo<<<END
+
+Usage: doctest  [php-interpreter]  [/path/to/your/php/manual/]
+
+   Runs the examples from your locally installed PHP manual (any language
+   will work, but get the latest!) with the given PHP interpreter version
+   (use an older version to really test the emulated functions). You need
+   lynx or w3m installed also. Use only under U*ix/Linux.
+
+   Pipe the output through |less, |more or |most, there are built-in
+   delays. Rarely example scripts may not run (they are examples only).
+
+
+END;
+}
+
+#-- proceed
+else {
+
+
+   #-- args
+   $php = php_interpreter();
+   $dir = get_manual();
+   $html = get_lynx();
+   $tmpdir = $tmp = tmp();
+
+
+   #-- load emulation script
+   chdir(".");
+   system("./doc/devtools/test-up");
+   # dirname(dirname(__FILE__)) );
+   $upgrade_php = "upgrade.php";
+   $test_up = "test-up.php";
+   $emu2 = "ext/array.php";
+   $emu3 = "ext/mime.php";
+   require($upgrade_php);
+
+
+
+   #-- get function names
+   $funcs = emulated_functions();
+
+   #-- generate list of really emulated functions
+   $simulated = simulated();
+   $dont = array("time_nanosleep");
+
+
+
+   #-- all
+   $funcs = emulated_functions();
+   foreach ($funcs as $func) {
+
+      # read from php-manual
+      if (($fn = func2fn($func))
+       and !in_array($func, $dont) )
+#      and $ALL || in_array($func, $simulated) )
+      {
+         echo "checking function '\033[31m$func\033[37m'... ";
+
+
+         #-- grep example scripts
+         $tests = example_scripts($func);
+
+         #-- exec each
+         if ($n = count($tests)) {
+
+            #-- multiple scripts to run
+            foreach ($tests as $i=>$script) {
+
+               add_output($script);   // add print or echo if missing
+
+               up_version($script, $func);   // use test-up.php "up_functionname"
+
+               #-- output sample script text from doc
+               print_script($script);
+
+               #-- create temp script, run it
+               if ($MANY) {
+                  $tmp = "$tmpdir/$func#$i.php";
+               }
+               $script = ltrim($script);
+               file_put_contents(
+                  $tmp,
+                  "<?php\n\n".
+                  "#-- a test script for emulated function '$func'\n".
+#                  "if (function_exists('$func')) { echo \"ATTENTION: the native '$func' function will engage for this test\\n\"; }\n".
+                  "include('$test_up');\n".
+#                  "#include('$emu2');\n".
+#                  "#include('$emu3');\n".
+                  "error_reporting(E_ALL);\n\n".
+                  "#-- example[$i] as taken from PHP manual page '$fn'\n".
+                  "$script\n".
+                  "\n?".">"
+               );
+               echo "==>\033[32m\n";
+               passthru("$php $tmp 2>&1");
+               echo "\033[0;37m\n\n";
+            }
+
+            #-- pause before next func/script
+            sleep($PAUSE);
+            echo "\n-------------------------------------------------------------------\n\n";
+         }
+
+         else {
+            echo "NO EXAMPLES found in doc, skipping";
+         }
+         echo "\n";
+      }
+   }
+
+   #-- clean up
+   if ($CLEAN) {
+      unlink($tmp);
+   }
+}
+
+#-- even more clean
+if ($MANY && $CLEAN) { @rmdir($tmpdir); }
+
+
+
+
+
+   function emulated_functions($upgrade_php = "upgrade.php") {
+      preg_match_all("/function[ ]+(?:up_)?([_\w\d]+)\s*\(/", file_get_contents($upgrade_php), $uu);
+      return $uu[1];
+   }
+
+
+function php_interpreter() {
+   $php = $_SERVER["argv"][1];
+   $php = trim(`which $php`);
+   if (!$php) {
+      die(__FILE__.": Given PHP interpreter not in your %PATH!\n");
+   }
+   return $php;
+}
+
+function get_manual() {
+   $dir = $_SERVER["argv"][2];
+   if (!is_dir($dir) || !file_exists("$dir/function.print.html")) {
+      die(__FILE__.": PHP manual does not live under '$dir'.\n");
+   }
+   return $dir;
+}
+function get_lynx() {
+   ($html = `which w3m`) or ($html = `which lynx`);
+   if (!($html = trim($html))) {
+      die(__FILE__.": lynx or w3m required.\n");
+   }
+   return $html;
+}
+function tmp() {
+   global $MANY;
+   $tmp = "/tmp/upgrade.php.doctest.tmp";
+   $tmpdir = $tmp;
+   if ($MANY) { @unlink($tmpdir); @mkdir($tmpdir); }
+   return $tmp;
+}
+
+   #-- generate list of really emulated functions
+function simulated() {
+   global $php;
+   $simulated = `echo '<?php echo serialize(get_defined_functions()); ?>' | $php -q`;
+   $simulated = unserialize($simulated);
+   return $simulated["internal"];
+   
+}
+
+
+function func2fn($func) {
+   global $dir;
+  $fn = "$dir/function.".strtr($func, "_", "-").".html";
+  if (file_exists($fn)) { return $fn; }
+}
+
+
+function example_scripts($func) {
+   global $html;
+   $fn = func2fn($func);
+   $text = `$html -dump $fn`;
+   preg_match_all("/<\?php(.+?)\?".">/ms", $text, $uu);
+   return($uu[1]);
+}
+
+
+function add_output(&$scr) {
+               #-- fix output-less scripts: find last assigned-to variable name
+               if (!preg_match("/echo|print|var_dump/", $scr)) {
+                  if (preg_match('/^.+(\$[_\w\d\[\"\'\]]+)\s*=/s', $scr, $uu)) {
+                     $scr .= "\n\n#-- auto-added\nprint_r($uu[1]);\n";
+                  }
+                  else {
+                     $scr .= "\n\n#-- this script gives no useful output, or does it?";
+                  }
+               }
+               #-- fix compatibility to older PHP versions
+               $scr = preg_replace('/(\s)private(\s\$)/', '$1var$2', $scr);
+}
+function up_version(&$scr, $func) {
+   $scr = preg_replace("/$func/", "up_$func", $scr);
+}
+
+function print_script($scr) {
+   global $i, $PAUSE;
+               #-- output sample script text from doc
+               if ($i) {
+                  echo "\n++++++++++++++++++++++++++++\n\n";
+                  sleep($PAUSE);
+               }
+               echo "\033[1;30m<?php $scr\n?".">\033[0;37m\n";
+}
+
+?>

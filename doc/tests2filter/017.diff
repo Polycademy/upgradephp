@@ -1,0 +1,10 @@
+001- string(4) "data"
+001+ 
+002- bool(false)
+003- string(4) "data"
+004- bool(false)
+005- bool(false)
+006- 
+007- Warning: filter_var(): 'regexp' option missing in %s on line %d
+008- bool(false)
+009- Done

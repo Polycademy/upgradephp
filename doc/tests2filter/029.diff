@@ -1,0 +1,28 @@
+001- string(4) "DATA"
+001+ 
+002- string(46) "~!@#$%^&*()_QWERTYUIOPASDFGHJKLZXCVBNM<>>?"}{:"
+003- string(0) ""
+004- 
+005- Warning: filter_var(): First argument is expected to be a valid callback in %s on line %d
+006- NULL
+007- 
+008- Warning: filter_var(): First argument is expected to be a valid callback in %s on line %d
+009- NULL
+010- 
+011- Warning: filter_var(): First argument is expected to be a valid callback in %s on line %d
+012- NULL
+013- string(4) "data"
+014- string(46) "~!@#$%^&*()_qwertyuiopasdfghjklzxcvbnm<>>?"}{:"
+015- string(0) ""
+016- NULL
+017- NULL
+018- NULL
+019- NULL
+020- NULL
+021- NULL
+022- NULL
+023- NULL
+024- NULL
+025- int(1)
+026- string(4) "test"
+027- Done

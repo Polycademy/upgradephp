@@ -1,0 +1,14 @@
+001- int(513)
+001+ 
+002- int(513)
+003- int(518)
+004- int(257)
+005- bool(false)
+006- 
+007- Warning: filter_id() expects parameter 1 to be string, array given in %s009.php on line %d
+008- NULL
+009- bool(false)
+010- 
+011- Warning: filter_id() expects exactly 1 parameter, 3 given in %s009.php on line %d
+012- NULL
+013- Done

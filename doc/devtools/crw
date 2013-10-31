@@ -1,0 +1,70 @@
+#!/usr/bin/php -qC
+<?php
+/**
+ *
+ * converts hash-style function comments into phpDoc-style blocks,
+ * adds guessed @param list on the way
+ * 
+ *
+ */
+
+ 
+
+  $txt = file_get_contents("/dev/stdin");
+//  $txt = addslashes($txt);
+  $txt = preg_replace(
+     "_^#--\s*(.+?\n(^#.+?\n)*)(.+?function\s+\w+\((.*?)\))?_imse",
+     "'/**\n' . stripslashes(newcmt('$1')) . paramdesc('$4') . ' */\n' . stripslashes('$3')",
+     $txt
+  );
+//  $txt = stripslashes($txt);
+  print $txt;
+
+
+function newcmt($c) {
+   return preg_replace("_^[*/# ]*_ims", " * ", $c);
+}
+
+function paramdesc($f) {
+   if (!$f || !$_SERVER["argv"][1]) {
+     return " * \n";
+   }
+   $c = "";
+   $retype = "mixed";
+   preg_match_all("/([$]\w+)(=[^),]+)?/ims", $f, $uu);
+   foreach ($uu[1] as $i=>$var) {
+      $opt = stripslashes(substr($uu[2][$i],1));
+      $type = vartype($var, $opt);
+      $c .= " * @param  $type $var  "
+          . ($opt ? "(optional) $opt" : "")
+          . "\n";
+      if ($i==0) { $retype = $type; }
+   }
+   return $c ? " *\n$c" . " * @return $retype\n" : "";
+}
+
+function vartype($name, $defval="") {
+   $deftype = array(
+      "/^[\"\']/" => "string",
+      "/array\(/" => "array",
+      "/^\d+$/" => "integer",
+   );
+   foreach ($deftype as $rx=>$t) if (preg_match($rx, $defval)) {
+      return $t;
+   }
+   $typenames = array(
+      "/int|num|size|count|index|time|offs|len|flags/i" => "integer",
+      "/bool|option/i" => "boolean",
+      "/str|needle|name|char|form|call|func/i" => "string",
+      "/obj|class/i" => "object",
+      "/hash|list|keys|values|search|arr/i" => "array",
+      "/data|var/i" => "mixed",
+      "/asc|desc/i" => "boolean",
+   );
+   foreach ($typenames as $rx=>$t) if (preg_match($rx, $name)) {
+      return $t;
+   }
+   return "mixed";
+}
+
+?>

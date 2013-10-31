@@ -1,0 +1,47 @@
+
+
+  BEWARE: GIMMICK!!
+
+  If you run Linux and work on the console occasionally, you probably love
+  commandline tools. If you further develop PHP scripts, then you probably
+  sometimes wish to test PHP functions on the fly and more easily (without
+  typing yet another test script).
+
+  If that's the case, here is a simple script to simplify this. To install
+  follow these steps:
+
+
+  1. Create a $HOME/bin/php directory
+     (and add ~/bin/php/ to your shell PATH, of course)
+
+  2. Move the contents of this ./ dir into ~/bin/php/
+
+  3. Run "./make_symlinks" in this directory.
+
+  4. Eventually adapt the interpreter shebang #! in the PhpFuncCall script.
+
+
+  This will create a lot of symlinks to the "PhpFunctionCall" script. You
+  then can run PHP functions on the terminal like:
+
+
+   localhost:~$   base64_encode  AbcDef_1234
+
+
+  Of course this is not useful for all PHP functions, because some must be
+  used in conjunction or do not return displayable results. And some have
+  already been removed from the list. You can of course create special PHP
+  scripts, like the example 'phpecho' that call other PHP code or function
+  groups, of course.
+
+  If you run an older PHP version, then -sure-, you might want to include
+  upgrade.php from within 'PhpFunctionCall'.
+  
+
+
+  WINDOWS
+
+  No. Using that under Windows with its frustrating commandline window makes
+  little sense.
+
+

@@ -1,0 +1,19 @@
+001- int                      1                                               123                                               
+001+ 
+002- boolean                  1                                                                                                 
+003- float                    1                                               123                                               
+004- validate_regexp                                                                                   O'Henry                  
+005- validate_url        PHP  1  foo@bar.com    http://a.b.c        1.2.3.4   123  123abc<>()          O'Henry        하퍼    
+006- validate_email              foo@bar.com                                                                                    
+007- validate_ip                                                    1.2.3.4                                                     
+008- string              PHP  1  foo@bar.com    http://a.b.c        1.2.3.4   123  123abc()            O&#39;Henry    하퍼    
+009- stripped            PHP  1  foo@bar.com    http://a.b.c        1.2.3.4   123  123abc()            O&#39;Henry    하퍼    
+010- encoded             PHP  1  foo%40bar.com  http%3A%2F%2Fa.b.c  1.2.3.4   123  123abc%3C%3E%28%29  O%27Henry      %ED%95%98%ED%8D%BC
+011- special_chars       PHP  1  foo@bar.com    http://a.b.c        1.2.3.4   123  123abc&#60;&#62;()  O&#39;Henry    하퍼    
+012- unsafe_raw          PHP  1  foo@bar.com    http://a.b.c        1.2.3.4   123  123abc<>()          O'Henry        하퍼    
+013- email               PHP  1  foo@bar.com    http//a.b.c         1.2.3.4   123  123abc              O'Henry                  
+014- url                 PHP  1  foo@bar.com    http://a.b.c        1.2.3.4   123  123abc<>()          O'Henry                  
+015- number_int               1                                     1234      123  123                                          
+016- number_float             1                                     1234      123  123                                          
+017- magic_quotes        PHP  1  foo@bar.com    http://a.b.c        1.2.3.4   123  123abc<>()          O\'Henry       하퍼    
+018- callback            PHP  1  FOO@BAR.COM    HTTP://A.B.C        1.2.3.4   123  123ABC<>()          O'HENRY        하퍼

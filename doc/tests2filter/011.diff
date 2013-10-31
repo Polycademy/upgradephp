@@ -1,0 +1,20 @@
+001- string(4) "test"
+001+ 
+002- string(18) "http://example.com"
+003- string(27) "&#60;b&#62;test&#60;/b&#62;"
+004- bool(false)
+005- string(6) "string"
+006- float(12345.7)
+007- string(29) "&#60;p&#62;string&#60;/p&#62;"
+008- bool(false)
+009- 
+010- Warning: input_get() expects parameter 1 to be long, object given in %s on line %d
+011- NULL
+012- 
+013- Warning: input_get() expects parameter 3 to be long, string given in %s on line %d
+014- NULL
+015- 
+016- Warning: input_get() expects parameter 1 to be long, string given in %s on line %d
+017- NULL
+018- NULL
+019- Done

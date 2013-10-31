@@ -1,0 +1,59 @@
+
+PHP-only gettext emulation
+--------------------------
+
+The "gettext.php" include script tries to reimplement GNU gettext in
+pure PHP. It is incomplete and divergent in many ways, but seems to
+work well in its goal to be a quick drop-in replacement.
+
+You load the script like you'd include the "upgrade.php" script. You
+then have the family of gettext functions always available - wether
+compiled into your PHP binary or not.
+This way you can freely use standardized i18n features safely on any
+web server; and with all your applications.
+
+There are however a few minor obstacles and differences in between
+the original and the emulation which you have to take care of. Most
+of the incompatibilites descend from lousily documented behaviour of
+the original, and the emulated version have not been tested
+*extensively*.
+
+ - You should use setlocale() before any bindtextdomain(), because
+   this emulation does load the .mo/.po data files only once.
+
+ - The emulation only ever loads one translation file (it never
+   retrieves translation strings from different localizations,
+   so it is less useful in conjunction with Accept-Language header
+   settings - where multiple languages could be mixed together).
+   [Original gettext may or may not load from multiple files??]
+
+ - To be compliant with the native implementation, you have to make
+   sure, that the .mo files are built from the *.po source files.
+   (The emulation tries to work on both, but it really shouldn't do
+   that.)
+
+ - Order of environment variable precedence is:
+     1. LANGUAGE
+     2. LC_ALL
+     3. LC_MESSAGE
+     4. LANG                    (multiple langs)
+     5. setlocale()
+     6. HTTP_ACCEPT_LANGUAGE    (incompliant with GNU gettext,
+                                 but deemed senseful for PHP)
+
+ - There is a second variant of the script, which tries to handle
+   plural forms. This has multiple limitations:
+     - does not employ a full Plural-Forms parser (a C expression
+       which must be interpreted at runtime)
+     - matches and works only with a few built-in language plural
+       form syntaxes and orderings
+     - and it's fully untested as of yet (= not tested with a
+       real-world plural .po/.mo translation package)
+
+ - It constructs a global $_GETTEXT[] variable which contains all
+   messages and translations at runtime in-memory. That means, it
+   is far more memory-hungry and less scalable than the original
+   GNU libintl in C.
+
+
+

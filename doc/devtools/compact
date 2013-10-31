@@ -1,0 +1,12 @@
+#!/bin/sh
+
+#
+#  creates comment+whitespace free version of upgrade.php script
+#
+
+cd `dirname $0`
+cd ../..
+
+php -q -w upgrade.php | perl -pe 's/\s*([{}()\[\]=\-\/\$<>+*",;!&|])\s*|\n/$1/gmis;' > upgrade.php.shortened
+
+ls -l upgrade.php*

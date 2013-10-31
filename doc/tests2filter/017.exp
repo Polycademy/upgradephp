@@ -1,0 +1,9 @@
+string(4) "data"
+bool(false)
+string(4) "data"
+bool(false)
+bool(false)
+
+Warning: filter_var(): 'regexp' option missing in %s on line %d
+bool(false)
+Done

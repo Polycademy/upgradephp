@@ -1,0 +1,10 @@
+001- 1_callback
+001+ 
+002- 2
+003- data_callback
+004- array(2) {
+005-   ["a"]=>
+006-   string(10) "1_callback"
+007-   ["b"]=>
+008-   int(2)
+009- }

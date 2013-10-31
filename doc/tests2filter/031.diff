@@ -1,0 +1,18 @@
+001- float(1.234)
+001+ 
+002- float(1.234)
+003- float(1.234)
+004- float(1200)
+005- float(7000)
+006- float(7000)
+007- float(7000)
+008- float(0.007)
+009- 
+010- custom decimal:
+011- bool(false)
+012- float(1.234)
+013- float(1.234)
+014- 
+015- Warning: filter_var(): decimal separator must be one char in %s on line %d
+016- bool(false)
+017- bool(false)

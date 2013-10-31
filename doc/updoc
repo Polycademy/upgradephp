@@ -1,0 +1,119 @@
+#!/usr/bin/php -qC
+<?php
+/*
+   Adds hints about emulation functions to your local PHP documentation.
+*/
+
+#-- help
+if ($_SERVER["argc"] < 2) {
+
+   echo<<<END
+
+Usage: updoc [.../upgrade.php] /path/to/your/php-doc/directory/
+ 
+   This script will update your PHP documentation, if you have the
+   (DocBook-converted) multi-html-files version installed. The first
+   parameter must be the filepath to the 'upgrade.php' script, so the
+   names of the emulated functions are known.
+
+   You will afterwards find the abbreviation "EMU" in the required-
+   PHP-version line throughout the documentation, so you know which
+   functions you could safely use from now on (= without backwards
+   compatibility stomach aches).
+
+
+END;
+
+}
+
+#-- run
+else {
+   error_reporting(0);
+
+   #-- params
+   $emu = $_SERVER["argv"][1];
+   $dir = $_SERVER["argv"][2];
+   if (!$dir) {
+      $dir = $emu;
+      $emu = dirname(__FILE__)."/../upgrade.php";
+   }
+   if (!is_dir($dir)) {
+      die("The given 'PHP doc directory' of \"$dir\" isn't!\n");
+   }
+   if (!file_exists($emu)) {
+      die("Couldn't find 'upgrade.php' script under the given name \"$emu\".\n");
+   }
+   include($emu);
+   
+   #-- grep for function definitions
+   $text = file_get_contents($emu);
+   if (preg_match_all("/function[ ]+([_\w\d]+)\s*\(/", $text, $uu)) {
+      $list = $uu[1];
+   }
+   
+   #-- go thru doc
+   if ($list) {
+      $chng = 0;
+      foreach ($list as $func) {
+      
+         #-- doc filename
+         if (file_exists($fn = "$dir/function.".strtr($func, "_", "-").".html")) {
+            $html = file_get_contents($fn);
+            
+            #-- update if no hint found yet
+            if (!preg_match('/\(.*?(EMU|UP).*?\)/i', $html)) {
+               $l = strpos($html, ")"); 
+               $html = substr($html, 0, $l)
+                     . ", EMU"
+                     . substr($html, $l);
+               file_put_contents($fn, $html);
+               
+               $chng += 1;
+            }
+         }
+      }
+      
+      echo "$chng documentation files updated.\n";
+   }
+
+   #-- add some special files
+   $add_files = array(
+      array(
+         "func"=>"gzdecode",
+         "text"=>"PGh0bWw+PGhlYWQ+PHRpdGxlPmd6ZGVjb2RlPC90aXRsZT48L2hlYWQ+Cjxib2R5Pgo8ZGl2IGFsaWduPSJjZW50ZXIiPnVwZ3JhZGUucGhwIGRvYzwvZGl2Pgo8dGFibGUgYm9yZGVyPSIwIiB3aWR0aD0iMTAwJSIgY2VsbHBhZGRpbmc9IjAiIGNlbGxzcGFjaW5nPSIwIj48dHI+CiAgPHRkIGFsaWduPSJsZWZ0Ij48YSBocmVmPSJmdW5jdGlvbi5nemRlZmxhdGUuaHRtbCI+YmFjazwvYT48L3RkPgogIDx0ZCBhbGlnbj0icmlnaHQiPjxhIGhyZWY9ImZ1bmN0aW9uLmd6ZW5jb2RlLmh0bWwiPm5leHQ8L2E+PC90ZD4KPC90cj48L3RhYmxlPgo8aHIgYWxpZ249IkxFRlQiIHdpZHRoPSIxMDAlIj4KCjxoMT5nemRlY29kZTwvaDE+Cgo8cD4oUEhQIDYsIEVNVSk8L3A+CgpnemRlY29kZSZuYnNwOy0tJm5ic3A7RGVjb2RlcyBhIGd6aXAgY29tcHJlc3NlZCBzdHJpbmc8L2Rpdj4KCjxoMj5EZXNjcmlwdGlvbjwvaDI+CgpzdHJpbmcgPGIgY2xhc3M9Im1ldGhvZG5hbWUiPmd6ZGVjb2RlPC9iPiAoIHN0cmluZyBkYXRhIFssIGludCBtYXhsZW5dKTxicj4KPGJyPgo8cD5UaGlzIGZ1bmN0aW9uIGRlY29kZXMgYSBzdHJpbmcgY29tcHJlc3NlZCBieSB0aGUgCjxhIGhyZWY9ImZpbGU6Ly8vdXNyL3NoYXJlL21hbi9tYW4xL2d6aXAuMS5neiI+Z3ppcCgxKTwvYT4gdXRpbGl0eSBvcgp0aGUgPGEgY2xhc3M9ImZ1bmN0aW9uIiBocmVmPSJmdW5jdGlvbi5nemVuY29kZS5odG1sIj5nemVuY29kZSgpPC9hPgpmdW5jdGlvbi4gVGhlIG9wdGlvbmFsIHBhcmFtZXRlciAnbWF4bGVuJyBsaW1pdHMgdGhlIGxlbmd0aCBvZiB0aGUgcmV0dXJuZWQKc3RyaW5nIC0gaWYgdGhlIGluZmxhdGlvbiBwcm9jZXNzIHJldHVybmVkIGEgYmlnZ2VyIHJlc3VsdCBpdCB3b3VsZCBiZSBkcm9wcGVkLgo8L3A+Cgo8cD5UaGUgZ3ppcCBmb3JtYXQgaW50ZXJuYWxseSB1c2VzIHRoZSBkZWZsYXRlIGFsZ29yaXRobSwgYW5kIGFkZHMgYSBmZXcKY2hlY2tzdW1zIGFuZCBvcHRpb25hbCBtZXRhIGRhdGEgZmllbGRzLiBJdCBpcyByZWd1bGFyaWx5IHVzZWQgYXMKY29udGVudC1jb2RpbmcgaW4gSFRUUCByZXF1ZXN0cyBhbmQgcmVzcG9uc2VzLiBTZWUKPGEgaHJlZj0iaHR0cDovL3d3dy5mYXFzLm9yZy9yZmNzL3JmYzE5NTIiPlJGQzE5NTI8L2E+IGZvciB0aGUgZm9ybWF0CmRlc2NyaXB0aW9uLjwvcD4KCjxwPgpTZWUgYWxzbyA8YSBocmVmPSJmdW5jdGlvbi5nemVuY29kZS5odG1sIj48YiBjbGFzcz0iZnVuY3Rpb24iPmd6ZW5jb2RlKCk8L2I+PC9hPgphbmQgPGEgaHJlZj0iZnVuY3Rpb24uZ3ppbmZsYXRlLmh0bWwiPjxiIGNsYXNzPSJmdW5jdGlvbiI+Z3ppbmZsYXRlKCk8L2I+PC9hPi4KPC9wPgoKPHA+Rm9yIGNvbXBhdGliaWxpdHkgd2l0aCBvbGRlciBQSFAgdmVyc2lvbnMgKGFuZCBmb3IgcGVvcGxlIHRoYXQgYXJlCnVud2lsbGluZyB0byBsb2FkICd1cGdyYWRlLnBocCcpLCB5b3UgY2FuIHVzZSBmb2xsb3dpbmcgKHVuY2xlYW4pCndvcmthcm91bmQgZm9yIGRlY29tcHJlc3NpbmcgZ3ppcGVkIGRhdGE6PGJyPgo8YnI+CjxiPkV4YW1wbGUgMTwvYj46PGJyPgo8YnI+Cjxjb2RlPgombmJzcDsgICRnemRhdGEgPSBnemVuY29kZSgiSSdtIGdldHRpbmcgY29tcHJlc3NlZC4uLiIpOzxicj4KPGJyPgombmJzcDsgICRzdHIgPSBmdW5jdGlvbl9leGlzdHMoImd6ZGVjb2RlIik8YnI+CiZuYnNwOyAmbmJzcDsgJm5ic3A7ICA/IGd6ZGVjb2RlKCRnemRhdGEpPGJyPgombmJzcDsgJm5ic3A7ICZuYnNwOyAgOiBnemluZmxhdGUoc3Vic3RyKCRnemRhdGEsIDEwLCAtOCkpOzxicj4KPGJyPgo8L2NvZGU+CjwvcD4KCjxocj4KPHRhYmxlIGJvcmRlcj0iMCIgd2lkdGg9IjEwMCUiIGNlbGxwYWRkaW5nPSIwIiBjZWxsc3BhY2luZz0iMCI+PHRyPgogIDx0ZCB3aWR0aD0iMzMlIiBhbGlnbj0ibGVmdCI+PGEgaHJlZj0iZnVuY3Rpb24uZ3pkZWZsYXRlLmh0bWwiPmJhY2s8L2E+PGJyPmd6ZGVmbGF0ZTwvdGQ+CiAgPHRkIHdpZHRoPSIzMyUiIGFsaWduPSJjZW50ZXIiPjxhIGhyZWY9InJlZi56bGliLmh0bWwiPnVwPC9hPjxicj56bGliIG92ZXJ2aWV3PC90ZD4KICA8dGQgd2lkdGg9IjMzJSIgYWxpZ249InJpZ2h0Ij48YSBocmVmPSJmdW5jdGlvbi5nemVuY29kZS5odG1sIj5uZXh0PC9hPjxicj5nemVuY29kZTwvdGQ+CjwvdHI+PC90YWJsZT4KCjwvYm9keT4KPC9odG1sPgo=",
+         "sect"=>"zlib", "after"=>"gzencode",
+         "desc"=>"Decode a gzip compressed string",
+      ),
+   );
+   foreach ($add_files as $data) {
+      extract($data);
+      if (!file_exists($fn = "$dir/function.$func.html")
+||1) {
+         echo "adding \"$fn\"\n";
+         file_put_contents($fn, base64_decode($text));
+
+         #-- update function list page
+         $fn = array("$dir/ref.$sect.html", "$dir/index.functions.html");
+         update_files($fn, "/(<a\s+href=\"function.$after)/ims",
+            "<a href=\"function.$func.html\">$func</a> -- $desc.</dt>\n<dt> $1"
+         ); 
+      }
+   }
+
+}
+
+
+#-- inject something into a file
+function update_files($list, $regex, $replace) {
+   if (!is_array($list)) {
+      $list = array($list);
+   }
+   foreach ($list as $fn) {
+echo "+$fn\n";
+      $html = file_get_contents($fn);
+      $html = preg_replace($regex, $replace, $html);
+      file_put_contents($fn, $html);
+   }
+}
+
+?>

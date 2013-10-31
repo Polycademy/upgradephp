@@ -1,0 +1,44 @@
+001- array(7) {
+001+ 
+002-   [0]=>
+003-   int(1)
+004-   [1]=>
+005-   int(1)
+006-   [2]=>
+007-   bool(false)
+008-   [3]=>
+009-   int(-23234)
+010-   [4]=>
+011-   bool(false)
+012-   [5]=>
+013-   bool(false)
+014-   [6]=>
+015-   array(0) {
+016-   }
+017- }
+018- array(7) {
+019-   [0]=>
+020-   float(1.2)
+021-   [1]=>
+022-   float(1.7)
+023-   [2]=>
+024-   bool(false)
+025-   [3]=>
+026-   float(-23234.123)
+027-   [4]=>
+028-   bool(false)
+029-   [5]=>
+030-   bool(false)
+031-   [6]=>
+032-   array(0) {
+033-   }
+034- }
+035- 
+036- Warning: filter_var() expects parameter 2 to be long, array given in %s on line %d
+037- NULL
+038- string(1) "1"
+039- string(1) "1"
+040- string(1) "1"
+041- string(1) "1"
+042- string(1) "1"
+043- Done

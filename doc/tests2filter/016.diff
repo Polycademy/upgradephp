@@ -1,0 +1,11 @@
+001- string(5) "a@b.c"
+001+ 
+002- string(17) "abuse@example.com"
+003- bool(false)
+004- bool(false)
+005- bool(false)
+006- bool(false)
+007- bool(false)
+008- bool(false)
+009- string(57) "QWERTYUIOPASDFGHJKLZXCVBNM@QWERTYUIOPASDFGHJKLZXCVBNM.NET"
+010- Done

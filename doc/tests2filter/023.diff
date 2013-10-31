@@ -1,0 +1,7 @@
+001- string(18) "}"<p>test para</p>"
+001+ 
+002- string(53) "a[!@#<b>$%^&#38;*()@a@#$%^&#38;*(.<br>com@#$%^&#38;*("
+003- string(32) "white space here \ \ " some more"
+004- string(0) ""
+005- string(48) "             123456789000000       <qwertyuiop> "
+006- Done

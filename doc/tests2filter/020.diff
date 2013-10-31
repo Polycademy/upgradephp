@@ -1,0 +1,6 @@
+001- string(36) "test\'asd\'asd\'\' asd\\\'\"asdfasdf"
+001+ 
+002- string(2) "\'"
+003- string(0) ""
+004- string(2) "-1"
+005- Done

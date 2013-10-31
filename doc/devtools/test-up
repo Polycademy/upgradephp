@@ -1,0 +1,7 @@
+#!/bin/sh
+
+echo "generate test-up.php, with if function_exists() removed, all emulations prefixed by up_"
+
+egrep -v '^if [(]!function_exists|^[}]' upgrade.php \
+    | perl -pe 'if (/^   function ([\w_\d]+)/) { $save = $1; }; if ($save) { s/$save/up_$save/m; }' \
+    > upgrade.php.prefixed
