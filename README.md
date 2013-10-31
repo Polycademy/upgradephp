@@ -1,7 +1,7 @@
 UpgradePHP
 ==========
 
-This is Git clone of the amazing UpgradePHP project. It's a shim/polyfill for PHP 5.3/5.4 functions for PHP 4.1 and higher installations. I wanted it on Git since I mostly work via Git and not the fossil DVCS. 
+This is Git clone of the amazing UpgradePHP project. It's a shim/polyfill for PHP 5.3/5.4 functions for PHP 4.1 to PHP 5.1 installations. I wanted it on Git since I mostly work via Git and not the fossil DVCS. The below information is copied from the official sources. It can be adapted to be autoloaded from composer. But it's probably better for you to pick and choose which polyfills you want.
 
 - Version: 18.1
 - Official Site: http://include-once.org/p/upgradephp
@@ -26,4 +26,46 @@ The upgrade.php package also provides multiple emulation include scripts for lar
 
 Of course, the emulated modules don't behave 100% exactly like the original C implementations - but the upgrade.php extensions work much better than common workaround snippets, and should be 'good enough' for most applications. 
 
-Public Domain (= compatible to all open source and free software licenses) 
+Usage
+-----
+
+```php
+if (PHP_VERSION < 5.1) { include_once("upgrade.php"); } 
+json_encode("this will always work now"); 
+```
+Modules in Ext
+--------------
+
+gettext.php adds _() and various gettext() features. This extension is commonly used for localizing applications. Unlike other methods this is extremely easy to apply in source code.
+
+ftp.php reimplements FTP access using plain PHP socket functions.
+
+ctype.php provides a set of character classification functions.
+
+mime.php has MIME magic filetype detection functions.
+
+pdo.php is an emulatoion of the PDO database abstraction layer for PHP 4.x and PHP 5.0.
+
+pspell.php uses the commandline aspell utility to emulate the pspell_*() type of functions for checking for natural language spelling errors.
+
+bcmath.php for arbitrary precision math functions.
+
+php40array.php archives the more seldomly used array functions. This has been extracted from the main script, to keep it lean.
+
+The historic php40.php provides some functions for PHP 4.0 compatibility. Alltough nobody probably still has such old PHP versions running. 
+
+Non Standard
+------------
+
+Distributed alongside upgrade.php are a few function collections, which aren't really standard PHP. The author just has been too lazy to instantiat individual project hosting sites.
+
+http_query.class.php provides HttpRequest funtionality. It is partly compatible to PEAR::HTTPRequest, but mainly in place to later have an emulation for the PHP/PECL http extension and http_* functions.
+
+input.php is a highly recommended security feature. It wraps the input arrays $_GET, $_POST, $_REQUEST, $_COOKIE, $_SERVER into an object-oriented access layer. This OO access wrapper only allows access to submitted form data and HTTP variables through filter features. In essence this enforces input validation, because raw access is prevented (or at least can be logged). 
+
+License
+-------
+
+Unless noted otherwise, all scripts are Public domain.
+
+The PDO extension for example, is not. 
