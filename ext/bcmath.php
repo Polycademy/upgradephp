@@ -75,7 +75,7 @@ if (!function_exists("bcadd") && is_executable("/usr/bin/dc")) {
    function bccomp($a, $b, $scale=NULL) {
       bc___scaledown($a, $scale);
       bc___scaledown($b, $scale);
-      return (int) dc___exec(" $a 1*sA $b 1*sB  lBlA[1nq]sX>X lBlA[_1nq]sX<X 0nq", $scale);
+      return (int) dc_exec(" $a 1*sA $b 1*sB  lBlA[1nq]sX>X lBlA[_1nq]sX<X 0nq", $scale);
    }
    function bc___scaledown(&$a, $scale) {
       if (isset($scale) && ($dot = strpos($a, $dot))) {

@@ -3,17 +3,16 @@ PHP downwards compatibility functions
 -------------------------------------
 The "upgrade.php" package implements features and functions from
 newer PHP versions. It defines them as pure PHP code. Functions
-get defined dynamically defines, at runtime. All emulated functions
-use names identical to the original implementation. But it doesn't
-perturb if the native functions exist.
+get defined dynamically, at runtime. All emulated functions use
+names identical to the original implementation. But won't perturb
+if the native functions exist.
 
-So this is really a drop-in replacement. It allows you to use all
+So this is really a drop-in replacement. It allows you to use most
 PHP features regardless of the current PHP interpreter. You just
 have to include() this single script to remove any backward
 compatibility woes.
-This allows relying on the newer, more powerful PHP functions. The
-use and retyping of workarounds gets superfluous. Your application
-remains "PHP 4.1+ COMPATIBLE" while actually using PHP5.2 features.
+This allows relying on the newer, more powerful PHP functions. Use
+and retyping of workarounds gets superfluous.
 
 
 this is useful:
@@ -24,7 +23,6 @@ this is useful:
 - usage of gettext/bcmath/ftp/... extension would be nice in your
   project, but may not be available on all target web servers
 - if some other PHP project has a unmet dependency on your server
-- you have a sourceforge.net project homepage ;-)
 
 
 when it cannot help:
@@ -45,7 +43,7 @@ other things to note:
   of course
 - not all PHP errors are exactly mimicked,
   -> upgradephp leaves this often to parent functions (e.g. fopen)
-  -> and you probably test for errors on the native PHP anyhow
+  -> and you probably test for errors on native PHP setups anyhow
      (no practical need to have that in emulation mode)
 - memory shouldn't increase significantly, because if(func_exists)
   "interpretes away" most code 
@@ -73,7 +71,7 @@ this emulation just helps getting scripts run on aging PHP versions.
 Usage
 -----
 Simply include("upgrade.php"); in any of your scripts, if you want
-to rely on some PHP4.3 or PHP5.2 functions.
+to rely on some PHP5.5 functions.
 
    include("upgrade.php");
 
@@ -82,10 +80,13 @@ emulation wrapper if you depend on features from a certain PHP
 interpreter release:
 
   <?example
-     if (PHP_VERSION < "4.4.0") { include(".../upgrade.php"); }
+     if (PHP_VERSION < "5.4.0") { include(".../upgrade.php"); }
   ?>
 
 Currently following functions can be emulated:
+· array_column
+· json_last_error_msg
+· boolval
 · json_encode
 · json_decode
 · strptime
@@ -275,7 +276,7 @@ It is also safe to extract a few function bodies/definitions out of
 upgrade.php to make a shorter version (load only the needed funcs).
 But you should keep the "if (function_exists(...))" wrapper code
 preferrably.
-PHP_Compat however might make a better source, if you really need
+PHP_Compat however might make a better source if you really need
 just one or two functions.
 
 
@@ -344,13 +345,13 @@ exists.
 
 The other cmdline scripts are used for developing upgrade.php:
 
-· "ckavail.php" was used to check for added functions between
+· "cmpversion" was used to check for added functions between
    different PHP interpreter versions, purely a development script.
 
 · "dtools/doctests" greps your local PHP manual for function use
   examples, and executes them with the given PHP interpreter and
   the "upgrade.php" script loaded of course. This way you get live
-  tests, but also see:
+  tests.
 
 · "dtools/compact" creates a collapsed version of the upgrade.php
   script (saved into contrib/)
@@ -376,15 +377,6 @@ other new PHP extensions.
   code utilizing "ext/phprequest" more efficiently. It especially
   supports content-coding as per RFC2616 (HTTP standard) for saving
   a lot of bandwidth and getting answers faster.
-
-· "contrib/xmlrpc" likewise can compress output and is used to
-  access XML-RPC and IETF XML+RPC Web services. It takes advantage
-  of supported XML and EPI-XML-RPC extensions, but runs gracefully
-  (not 100% exact XML parser) without. It was also made to provide
-  downwards compatibility. Currently you shouldn't run it against
-  old and not-HTTP standards-compliant servers and clients (=avoid
-  compression unless you use it also as server or client at the
-  other side).
 
 · "contrib/hiddenerrors" shows a nice way to hide all disturbing
   error messages from users, but keeping them available for
@@ -451,6 +443,15 @@ bytes...
 
 ChangeLog
 ---------
+
+v19
+  - Adds new PHP5.5 functions: array_column(), json_last_error_msg(),
+    boolval()
+  - Ships with password_compat[MITL] from Anthony Ferrara, which add
+    password_hash() and password_verify() from PHP5.5
+  - Minor additions to json_encode and json_decode
+  - Introduces ext/contrib/pdo_mysql.php, wrapper functions for PDO,
+    that mimick the signature of mysql_* functions with a pdo_* prefix.
 
 v18
   - Anthon Pang contributed mysqli_set_charset() and E_DEPRECATED const

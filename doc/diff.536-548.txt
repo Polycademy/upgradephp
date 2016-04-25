@@ -1,0 +1,145 @@
+available versions: 4.4.7, 5.0.5, 5.1.0, 5.2.0, 5.2.2, 5.2.4, 5.3.10, 5.3.6, 5.4.0RC3, 5.4.8, 5.5.5
+comparing [31m5.3.6[39m and [32m5.4.8[39m:
+old(1632), new(1184)
+[32mNew functions:[39m
+Array
+(
+    [20] => trait_exists
+    [37] => get_declared_traits
+    [112] => libxml_set_external_entity_loader
+    [189] => gzdecode
+    [190] => zlib_encode
+    [191] => zlib_decode
+    [305] => imageantialias
+    [312] => imagecreatefromxbm
+    [343] => imagelayereffect
+    [344] => imagexbm
+    [463] => class_uses
+    [509] => readline_list_history
+    [513] => readline_callback_handler_install
+    [514] => readline_callback_read_char
+    [515] => readline_callback_handler_remove
+    [516] => readline_redisplay
+    [517] => readline_on_new_line
+    [534] => session_status
+    [535] => session_register_shutdown
+    [573] => socket_import_stream
+    [578] => hex2bin
+    [599] => getimagesizefromstring
+    [784] => header_register_callback
+    [827] => http_response_code
+    [924] => stream_set_chunk_size
+    [1127] => xmlrpc_encode
+    [1128] => xmlrpc_decode
+    [1129] => xmlrpc_decode_request
+    [1130] => xmlrpc_encode_request
+    [1131] => xmlrpc_get_type
+    [1132] => xmlrpc_set_type
+    [1133] => xmlrpc_is_fault
+    [1134] => xmlrpc_server_create
+    [1135] => xmlrpc_server_destroy
+    [1136] => xmlrpc_server_register_method
+    [1137] => xmlrpc_server_call_method
+    [1138] => xmlrpc_parse_method_descriptions
+    [1139] => xmlrpc_server_add_introspection_data
+    [1140] => xmlrpc_server_register_introspection_callback
+)
+
+[32mNewly added constants:[39m
+Array
+(
+    [39] => PHP_MANDIR
+    [51] => PHP_BINARY
+    [53] => PHP_OUTPUT_HANDLER_WRITE
+    [54] => PHP_OUTPUT_HANDLER_FLUSH
+    [55] => PHP_OUTPUT_HANDLER_CLEAN
+    [56] => PHP_OUTPUT_HANDLER_FINAL
+    [59] => PHP_OUTPUT_HANDLER_CLEANABLE
+    [60] => PHP_OUTPUT_HANDLER_FLUSHABLE
+    [61] => PHP_OUTPUT_HANDLER_REMOVABLE
+    [62] => PHP_OUTPUT_HANDLER_STDFLAGS
+    [63] => PHP_OUTPUT_HANDLER_STARTED
+    [64] => PHP_OUTPUT_HANDLER_DISABLED
+    [101] => LIBXML_PEDANTIC
+    [106] => LIBXML_HTML_NOIMPLIED
+    [107] => LIBXML_HTML_NODEFDTD
+    [125] => OPENSSL_ALGO_SHA224
+    [126] => OPENSSL_ALGO_SHA256
+    [127] => OPENSSL_ALGO_SHA384
+    [128] => OPENSSL_ALGO_SHA512
+    [129] => OPENSSL_ALGO_RMD160
+    [148] => OPENSSL_CIPHER_AES_128_CBC
+    [149] => OPENSSL_CIPHER_AES_192_CBC
+    [150] => OPENSSL_CIPHER_AES_256_CBC
+    [155] => OPENSSL_RAW_DATA
+    [156] => OPENSSL_ZERO_PADDING
+    [185] => ZLIB_ENCODING_RAW
+    [186] => ZLIB_ENCODING_GZIP
+    [187] => ZLIB_ENCODING_DEFLATE
+    [323] => IMG_EFFECT_REPLACE
+    [324] => IMG_EFFECT_ALPHABLEND
+    [325] => IMG_EFFECT_NORMAL
+    [326] => IMG_EFFECT_OVERLAY
+    [363] => JSON_UNESCAPED_SLASHES
+    [364] => JSON_PRETTY_PRINT
+    [365] => JSON_UNESCAPED_UNICODE
+    [372] => JSON_OBJECT_AS_ARRAY
+    [373] => JSON_BIGINT_AS_STRING
+    [374] => PHP_SESSION_DISABLED
+    [375] => PHP_SESSION_NONE
+    [376] => PHP_SESSION_ACTIVE
+    [504] => PHP_QUERY_RFC1738
+    [505] => PHP_QUERY_RFC3986
+    [551] => ENT_SUBSTITUTE
+    [552] => ENT_DISALLOWED
+    [553] => ENT_HTML401
+    [554] => ENT_XML1
+    [555] => ENT_XHTML
+    [556] => ENT_HTML5
+    [707] => SCANDIR_SORT_ASCENDING
+    [708] => SCANDIR_SORT_DESCENDING
+    [709] => SCANDIR_SORT_NONE
+    [765] => SORT_NATURAL
+    [766] => SORT_FLAG_CASE
+    [793] => STREAM_META_TOUCH
+    [794] => STREAM_META_OWNER
+    [795] => STREAM_META_OWNER_NAME
+    [796] => STREAM_META_GROUP
+    [797] => STREAM_META_GROUP_NAME
+    [798] => STREAM_META_ACCESS
+    [842] => READLINE_LIB
+    [955] => MCAST_JOIN_GROUP
+    [956] => MCAST_LEAVE_GROUP
+    [957] => MCAST_BLOCK_SOURCE
+    [958] => MCAST_UNBLOCK_SOURCE
+    [959] => MCAST_JOIN_SOURCE_GROUP
+    [960] => MCAST_LEAVE_SOURCE_GROUP
+    [961] => IP_MULTICAST_IF
+    [962] => IP_MULTICAST_TTL
+    [963] => IP_MULTICAST_LOOP
+    [964] => IPV6_MULTICAST_IF
+    [965] => IPV6_MULTICAST_HOPS
+    [966] => IPV6_MULTICAST_LOOP
+    [1068] => IPPROTO_IP
+    [1069] => IPPROTO_IPV6
+    [1162] => T_INSTEADOF
+    [1176] => T_TRAIT
+    [1184] => T_CALLABLE
+    [1186] => T_TRAIT_C
+    [1237] => XSL_SECPREF_NONE
+    [1238] => XSL_SECPREF_READ_FILE
+    [1239] => XSL_SECPREF_WRITE_FILE
+    [1240] => XSL_SECPREF_CREATE_DIRECTORY
+    [1241] => XSL_SECPREF_READ_NETWORK
+    [1242] => XSL_SECPREF_WRITE_NETWORK
+    [1243] => XSL_SECPREF_DEFAULT
+)
+
+[32mAnd classes:[39m
+Array
+(
+    [61] => CallbackFilterIterator
+    [62] => RecursiveCallbackFilterIterator
+    [94] => SessionHandler
+    [116] => ReflectionZendExtension
+)

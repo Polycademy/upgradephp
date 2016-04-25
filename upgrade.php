@@ -3,7 +3,7 @@
  * api:		php
  * title:	upgrade.php
  * description:	Emulates functions from new PHP versions on older interpreters.
- * version:	18.1
+ * version:	19
  * license:	Public Domain
  * url:		http://freshmeat.net/projects/upgradephp
  * type:	functions
@@ -64,6 +64,102 @@ if (defined("UPGRADEPHP_OVERRIDE") and function_exists("runkit_function_remove")
    runkit_function_rename("json_encode", "php::json_encode");
    runkit_function_rename("json_decode", "php::json_encode");
  }
+
+/**
+ *                                   ----------------------------- 5.5 ---
+ * @group 5_5
+ * @since 5.5
+ *
+ * Extensions in PHP 5.5
+ *
+ * @emulated
+ *    boolval
+ *    array_column
+ *    json_last_error_msg
+ *
+ * @missing
+ *    date_create_immutable
+ *    date_create_immutable_from_format
+ *    openssl_pbkdf2
+ *    hash_pbkdf2
+ *
+ */
+
+
+
+
+/**
+ * Creates a new array from excerpting columns from a list of arrays. Optionally
+ * uses a key column from there for indexing.
+ *
+ * Full reimplementation at https://github.com/ramsey/array_column/blob/master/src/array_column.php
+ *
+ */
+if (!function_exists("array_column")) {
+   function array_column($array, $column, $key=NULL) {
+
+      $result = array();
+      assert('isset($column) /*array_column() expects two params*/')
+      and assert('is_scalar($column) && is_scalar($key) /*array_column() key and column should be ints/strings*/')
+      and assert('is_array($array) /*array_column() input array isn\'t one*/');
+
+      // traverse array
+      foreach ($array as $row) {
+         if (isset($row[$column])) {
+       
+            // fetch as ordered list 
+            if (($key === NULL) || !isset($row[$key]))  {   // this is odd in the native implementation, if the $key column is absent, it just appends
+               $result[] = $row[$column];
+            }   
+           
+            // or retain key value from another column for indexing
+            else {
+               //isset($result[$row[$key]]) and trigger_error("array_column(): a key occured twice, value was overwritten", E_USER_NOTICE);
+               $result[ $row[$key] ] = $row[$column];
+            }
+         }
+      }
+      return $result;
+   }
+}
+
+
+/**
+ * That's basically just a typecast. Returns the PHP-interpreted booleanish equivalent of values.
+ * Just exists for parity with intval/floatval/etc.
+ *
+ */
+if (!function_exists("boolval")) {
+   function boolval($var) {
+      return (bool)$var;
+   }
+}
+
+
+
+/**
+ * Convert json_last_error() numbers into readable string:
+ *
+ */
+if (!function_exists("json_last_error_msg")) {
+   function json_last_error_msg($num) {
+      $msgs = array(
+         JSON_ERROR_NONE => "No error has occurred",
+         JSON_ERROR_DEPTH => "The maximum stack depth has been exceeded",
+         JSON_ERROR_STATE_MISMATCH => "Invalid or malformed JSON",
+         JSON_ERROR_CTRL_CHAR => "Control character error, possibly incorrectly encoded",
+         JSON_ERROR_SYNTAX => "Syntax error",
+         JSON_ERROR_UTF8 => "Malformed UTF-8 characters, possibly incorrectly encoded",
+         JSON_ERROR_RECURSION => "One or more recursive references in the value to be encoded",
+         JSON_ERROR_INF_OR_NAN => "One or more NAN or INF values in the value to be encoded",
+         JSON_ERROR_UNSUPPORTED_TYPE => "A value of a type that cannot be encoded was given",
+      );
+      return $msgs[$num];
+   }
+}
+
+
+
 
 
 
@@ -745,7 +841,9 @@ if (!defined("JSON_UNESCAPED_SLASHES")) {
  }
 if (!function_exists("json_encode")) {
    function json_encode($var, $options=0, $_indent="") {
-
+      global ${'.json_last_error'};
+      ${'.json_last_error'} = JSON_ERROR_NONE;
+            
       #-- prepare JSON string
       $obj = ($options & JSON_FORCE_OBJECT);
       list($_space, $_tab, $_nl) = ($options & JSON_PRETTY_PRINT) ? array(" ", "    $_indent", "\n") : array("", "", "");
@@ -768,7 +866,7 @@ if (!function_exists("json_encode")) {
          $empty = 0; $json = "";
          foreach ((array)$var as $i=>$v) {
             $json .= ($empty++ ? ",$_nl" : "")    // comma separators
-                   . $_tab . ($obj ? (json_encode($i, $options, $_tab) . ":$_space") : "")   // assoc prefix
+                   . $_tab . ($obj ? (json_encode($i, $options & ~JSON_NUMERIC_CHECK, $_tab) . ":$_space") : "")   // assoc prefix
                    . (json_encode($v, $options, $_tab));    // value
          }
 
@@ -813,13 +911,24 @@ if (!function_exists("json_encode")) {
       elseif ($var === NULL) {
          $json = "null";
       }
-      elseif (is_int($var) || is_float($var)) {
+      elseif (is_int($var)) {
          $json = "$var";
+      }
+      elseif (is_float($var)) {
+         if (is_nan($var) || is_infinite($var)) {
+            ${'.json_last_error'} = JSON_ERROR_INF_OR_NAN;
+            return;
+         }
+         else {
+            $json = "$var";
+         }
       }
 
       #-- something went wrong
       else {
          trigger_error("json_encode: don't know what a '" .gettype($var). "' is.", E_USER_WARNING);
+         ${'.json_last_error'} = JSON_ERROR_UNSUPPORTED_TYPE;
+         return;
       }
       
       #-- done
@@ -855,14 +964,27 @@ if (!function_exists("json_decode")) {
    define("JSON_PARSE_JAVASCRIPT", 4);    // unquoted object keys, and single quotes ' strings identical to double quoted, more relaxed parsing
 
    function json_decode($json, $assoc=FALSE, $limit=512, $options=0, /*emu_args*/$n=0,$state=0,$waitfor=0) {
-      global ${'.json_last_error'}; ${'.json_last_error'} = JSON_ERROR_NONE;
+      global ${'.json_last_error'};
+      ${'.json_last_error'} = JSON_ERROR_NONE;
+
+      #-- maximum nesting depth for decoding
+      if ($limit < 0) {
+          ${'.json_last_error'} = JSON_ERROR_DEPTH;
+          return; // fall through
+      }
 
       #-- result var
       $val = NULL;
-      $FAILURE = array(/*$val:=*/ NULL, /*$n:=*/ 1<<31);
+      
+      // shortcut state for parsing errors
+      $FAILURE = array(
+          NULL,   // result var
+          1<<31   // tokenizer position
+      );
+      
+      // transliterations from JSON to PHP values
       static $lang_eq = array("true" => TRUE, "false" => FALSE, "null" => NULL);
       static $str_eq = array("n"=>"\012", "r"=>"\015", "\\"=>"\\", '"'=>'"', "f"=>"\f", "b"=>"\010", "t"=>"\t", "/"=>"/");
-      if ($limit<0) { ${'.json_last_error'} = JSON_ERROR_DEPTH; return /* __cannot_compensate */; }
       
       #-- strip UTF-8 BOM (the native version doesn't do this, but .. should)
       while (strncmp($json, "\xEF\xBB\xBF", 3) == 0) {
@@ -1073,6 +1195,9 @@ if (!defined("JSON_ERROR_NONE")) {
    define("JSON_ERROR_CTRL_CHAR", 3);
    define("JSON_ERROR_SYNTAX", 4);
    define("JSON_ERROR_UTF8", 5);
+   define("JSON_ERROR_RECURSION", 6);
+   define("JSON_ERROR_INF_OR_NAN", 7);
+   define("JSON_ERROR_UNSUPPORTED_TYPE", 7);
  }
 if (!function_exists("json_last_error")) {
    function json_last_error() {
