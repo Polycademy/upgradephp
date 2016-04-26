@@ -3,7 +3,7 @@ UpgradePHP
 
 This is Git clone of the amazing UpgradePHP project. It's a shim/polyfill for PHP 5.3/5.4 functions for PHP 4.1 to PHP 5.1 installations. I wanted it on Git since I mostly work via Git and not the fossil DVCS. The below information is copied from the official sources. It can be adapted to be autoloaded from composer. But it's probably better for you to pick and choose which polyfills you want.
 
-- Version: 18.1
+- Version: 19.1
 - Official Site: http://include-once.org/p/upgradephp
 - Official Repository: http://fossil.include-once.org/upgradephp
 
@@ -20,18 +20,18 @@ The emulated functions are of course only ever used, if the current PHP interpre
 
 So the native functions get called as usual on current setups. But your applications are guaranteed to work unchanged for anybody else, regardless of PHP version. Only a minimum compatibility requirement of "PHP 4.1" remains.
 
-A few classes are also emulated. But it's kind of too much work to port SPL or other extensions over. No contributions so far. And why it never occurred to PHP.net developers to do a reference implementation for anything is somewhat unclear. 
+A few classes are also emulated. But it's kind of too much work to port SPL or other extensions over. No contributions so far. And why it never occurred to PHP.net developers to do a reference implementation for anything is somewhat unclear.
 
 The upgrade.php package also provides multiple emulation include scripts for larger PHP extensions, like gettext, ftp and ctype, mime functions, odbc, dba. See also the Wiki in the Fossil repository.
 
-Of course, the emulated modules don't behave 100% exactly like the original C implementations - but the upgrade.php extensions work much better than common workaround snippets, and should be 'good enough' for most applications. 
+Of course, the emulated modules don't behave 100% exactly like the original C implementations - but the upgrade.php extensions work much better than common workaround snippets, and should be 'good enough' for most applications.
 
 Usage
 -----
 
 ```php
-if (PHP_VERSION < 5.1) { include_once("upgrade.php"); } 
-json_encode("this will always work now"); 
+if (PHP_VERSION < 5.1) { include_once("upgrade.php"); }
+json_encode("this will always work now");
 ```
 Modules in Ext
 --------------
@@ -52,7 +52,7 @@ bcmath.php for arbitrary precision math functions.
 
 php40array.php archives the more seldomly used array functions. This has been extracted from the main script, to keep it lean.
 
-The historic php40.php provides some functions for PHP 4.0 compatibility. Alltough nobody probably still has such old PHP versions running. 
+The historic php40.php provides some functions for PHP 4.0 compatibility. Alltough nobody probably still has such old PHP versions running.
 
 Non Standard
 ------------
@@ -61,11 +61,11 @@ Distributed alongside upgrade.php are a few function collections, which aren't r
 
 http_query.class.php provides HttpRequest funtionality. It is partly compatible to PEAR::HTTPRequest, but mainly in place to later have an emulation for the PHP/PECL http extension and http_* functions.
 
-input.php is a highly recommended security feature. It wraps the input arrays $_GET, $_POST, $_REQUEST, $_COOKIE, $_SERVER into an object-oriented access layer. This OO access wrapper only allows access to submitted form data and HTTP variables through filter features. In essence this enforces input validation, because raw access is prevented (or at least can be logged). 
+input.php is a highly recommended security feature. It wraps the input arrays $_GET, $_POST, $_REQUEST, $_COOKIE, $_SERVER into an object-oriented access layer. This OO access wrapper only allows access to submitted form data and HTTP variables through filter features. In essence this enforces input validation, because raw access is prevented (or at least can be logged).
 
 License
 -------
 
 Unless noted otherwise, all scripts are Public domain.
 
-The PDO extension for example, is not. 
+The PDO extension for example, is not.

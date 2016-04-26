@@ -1,0 +1,114 @@
+available versions: 4.4.7, 5.0.5, 5.1.0, 5.2.0, 5.2.2, 5.2.4, 5.3.10, 5.3.6, 5.4.0RC3, 5.4.8, 5.5.5
+comparing [31m5.4.8[39m and [32m5.5.5[39m:
+old(1184), new(1204)
+[32mNew functions:[39m
+Array
+(
+    [66] => date_create_immutable
+    [68] => date_create_immutable_from_format
+    [149] => openssl_pbkdf2
+    [297] => imagepalettetotruecolor
+    [309] => imageflip
+    [311] => imagecrop
+    [312] => imagecropauto
+    [313] => imagescale
+    [314] => imageaffine
+    [315] => imageaffinematrixconcat
+    [316] => imageaffinematrixget
+    [317] => imagesetinterpolation
+    [371] => hash_pbkdf2
+    [385] => json_last_error_msg
+    [586] => socket_sendmsg
+    [587] => socket_recvmsg
+    [588] => socket_cmsg_space
+    [736] => password_hash
+    [737] => password_get_info
+    [738] => password_needs_rehash
+    [739] => password_verify
+    [863] => boolval
+    [969] => chroot
+    [1071] => array_column
+    [1202] => cli_set_process_title
+    [1203] => cli_get_process_title
+)
+
+[32mNewly added constants:[39m
+Array
+(
+    [106] => LIBXML_SCHEMA_CREATE
+    [262] => FILTER_VALIDATE_MAC
+    [325] => IMG_FLIP_HORIZONTAL
+    [326] => IMG_FLIP_VERTICAL
+    [327] => IMG_FLIP_BOTH
+    [332] => IMG_CROP_DEFAULT
+    [333] => IMG_CROP_TRANSPARENT
+    [334] => IMG_CROP_BLACK
+    [335] => IMG_CROP_WHITE
+    [336] => IMG_CROP_SIDES
+    [337] => IMG_CROP_THRESHOLD
+    [338] => IMG_BELL
+    [339] => IMG_BESSEL
+    [340] => IMG_BILINEAR_FIXED
+    [341] => IMG_BICUBIC
+    [342] => IMG_BICUBIC_FIXED
+    [343] => IMG_BLACKMAN
+    [344] => IMG_BOX
+    [345] => IMG_BSPLINE
+    [346] => IMG_CATMULLROM
+    [347] => IMG_GAUSSIAN
+    [348] => IMG_GENERALIZED_CUBIC
+    [349] => IMG_HERMITE
+    [350] => IMG_HAMMING
+    [351] => IMG_HANNING
+    [352] => IMG_MITCHELL
+    [353] => IMG_POWER
+    [354] => IMG_QUADRATIC
+    [355] => IMG_SINC
+    [356] => IMG_NEAREST_NEIGHBOUR
+    [357] => IMG_WEIGHTED4
+    [358] => IMG_TRIANGLE
+    [359] => IMG_AFFINE_TRANSLATE
+    [360] => IMG_AFFINE_SCALE
+    [361] => IMG_AFFINE_ROTATE
+    [362] => IMG_AFFINE_SHEAR_HORIZONTAL
+    [363] => IMG_AFFINE_SHEAR_VERTICAL
+    [403] => JSON_PARTIAL_OUTPUT_ON_ERROR
+    [410] => JSON_ERROR_RECURSION
+    [411] => JSON_ERROR_INF_OR_NAN
+    [412] => JSON_ERROR_UNSUPPORTED_TYPE
+    [684] => PASSWORD_DEFAULT
+    [685] => PASSWORD_BCRYPT
+    [686] => PASSWORD_BCRYPT_DEFAULT_COST
+    [964] => SOAP_SSL_METHOD_TLS
+    [965] => SOAP_SSL_METHOD_SSLv2
+    [966] => SOAP_SSL_METHOD_SSLv3
+    [967] => SOAP_SSL_METHOD_SSLv23
+    [978] => MSG_CTRUNC
+    [979] => MSG_TRUNC
+    [984] => MSG_CONFIRM
+    [985] => MSG_ERRQUEUE
+    [986] => MSG_NOSIGNAL
+    [988] => MSG_MORE
+    [989] => MSG_WAITFORONE
+    [990] => MSG_CMSG_CLOEXEC
+    [1006] => SO_BINDTODEVICE
+    [1129] => IPV6_UNICAST_HOPS
+    [1130] => IPV6_RECVPKTINFO
+    [1131] => IPV6_PKTINFO
+    [1132] => IPV6_RECVHOPLIMIT
+    [1133] => IPV6_HOPLIMIT
+    [1134] => IPV6_RECVTCLASS
+    [1135] => IPV6_TCLASS
+    [1136] => SCM_RIGHTS
+    [1137] => SCM_CREDENTIALS
+    [1138] => SO_PASSCRED
+    [1225] => T_YIELD
+    [1228] => T_FINALLY
+)
+
+[32mAnd classes:[39m
+Array
+(
+    [4] => Generator
+    [6] => DateTimeImmutable
+)

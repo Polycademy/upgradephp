@@ -1,0 +1,136 @@
+available versions: 4.4.7, 5.0.5, 5.1.0, 5.2.0, 5.2.2, 5.2.4, 5.3.10, 5.3.6, 5.4.0RC3, 5.4.8, 5.5.5
+comparing [31m5.0.5[39m and [32m5.1.0[39m:
+old(698), new(733)
+[32mNew functions:[39m
+Array
+(
+    [16] => property_exists
+    [46] => libxml_use_internal_errors
+    [47] => libxml_get_last_error
+    [48] => libxml_clear_errors
+    [49] => libxml_get_errors
+    [81] => time_sleep_until
+    [82] => strptime
+    [89] => htmlspecialchars_decode
+    [261] => inet_ntop
+    [262] => inet_pton
+    [391] => stream_context_get_default
+    [394] => stream_filter_remove
+    [401] => stream_socket_enable_crypto
+    [402] => stream_socket_pair
+    [406] => fputcsv
+    [418] => stream_wrapper_unregister
+    [419] => stream_wrapper_restore
+    [541] => array_intersect_key
+    [542] => array_intersect_ukey
+    [549] => array_diff_key
+    [550] => array_diff_ukey
+    [557] => array_product
+    [582] => spl_autoload
+    [583] => spl_autoload_extensions
+    [584] => spl_autoload_register
+    [585] => spl_autoload_unregister
+    [586] => spl_autoload_functions
+    [587] => spl_autoload_call
+    [590] => iterator_to_array
+    [591] => iterator_count
+    [592] => pdo_drivers
+    [680] => posix_mknod
+    [681] => posix_access
+    [713] => date_default_timezone_set
+    [714] => date_default_timezone_get
+)
+
+[32mNewly added constants:[39m
+Array
+(
+    [59] => LIBXML_VERSION
+    [60] => LIBXML_DOTTED_VERSION
+    [61] => LIBXML_NOENT
+    [62] => LIBXML_DTDLOAD
+    [63] => LIBXML_DTDATTR
+    [64] => LIBXML_DTDVALID
+    [65] => LIBXML_NOERROR
+    [66] => LIBXML_NOWARNING
+    [67] => LIBXML_NOBLANKS
+    [68] => LIBXML_XINCLUDE
+    [69] => LIBXML_NSCLEAN
+    [70] => LIBXML_NOCDATA
+    [71] => LIBXML_NONET
+    [72] => LIBXML_COMPACT
+    [73] => LIBXML_NOXMLDECL
+    [74] => LIBXML_NOEMPTYTAG
+    [75] => LIBXML_ERR_NONE
+    [76] => LIBXML_ERR_WARNING
+    [77] => LIBXML_ERR_ERROR
+    [78] => LIBXML_ERR_FATAL
+    [224] => T_HALT_COMPILER
+    [311] => STREAM_CRYPTO_METHOD_SSLv2_CLIENT
+    [312] => STREAM_CRYPTO_METHOD_SSLv3_CLIENT
+    [313] => STREAM_CRYPTO_METHOD_SSLv23_CLIENT
+    [314] => STREAM_CRYPTO_METHOD_TLS_CLIENT
+    [315] => STREAM_CRYPTO_METHOD_SSLv2_SERVER
+    [316] => STREAM_CRYPTO_METHOD_SSLv3_SERVER
+    [317] => STREAM_CRYPTO_METHOD_SSLv23_SERVER
+    [318] => STREAM_CRYPTO_METHOD_TLS_SERVER
+    [319] => STREAM_PF_INET
+    [320] => STREAM_PF_INET6
+    [321] => STREAM_PF_UNIX
+    [322] => STREAM_IPPROTO_IP
+    [323] => STREAM_IPPROTO_TCP
+    [324] => STREAM_IPPROTO_UDP
+    [325] => STREAM_IPPROTO_ICMP
+    [326] => STREAM_IPPROTO_RAW
+    [327] => STREAM_SOCK_STREAM
+    [328] => STREAM_SOCK_DGRAM
+    [329] => STREAM_SOCK_RAW
+    [330] => STREAM_SOCK_SEQPACKET
+    [331] => STREAM_SOCK_RDM
+    [418] => GLOB_ERR
+    [511] => DNS_A6
+    [545] => POSIX_F_OK
+    [546] => POSIX_X_OK
+    [547] => POSIX_W_OK
+    [548] => POSIX_R_OK
+    [549] => POSIX_S_IFREG
+    [550] => POSIX_S_IFCHR
+    [551] => POSIX_S_IFBLK
+    [552] => POSIX_S_IFIFO
+    [553] => POSIX_S_IFSOCK
+)
+
+[32mAnd classes:[39m
+Array
+(
+    [2] => ErrorException
+    [12] => LibXMLError
+    [17] => PDOException
+    [18] => PDO
+    [19] => PDOStatement
+    [20] => PDORow
+    [23] => RecursiveFilterIterator
+    [27] => RecursiveCachingIterator
+    [28] => IteratorIterator
+    [29] => NoRewindIterator
+    [30] => AppendIterator
+    [31] => InfiniteIterator
+    [32] => EmptyIterator
+    [35] => RecursiveArrayIterator
+    [38] => SplFileObject
+    [40] => LogicException
+    [41] => BadFunctionCallException
+    [42] => BadMethodCallException
+    [43] => DomainException
+    [44] => InvalidArgumentException
+    [45] => LengthException
+    [46] => OutOfRangeException
+    [47] => RuntimeException
+    [48] => OutOfBoundsException
+    [49] => OverflowException
+    [50] => RangeException
+    [51] => UnderflowException
+    [52] => UnexpectedValueException
+    [53] => SplObjectStorage
+    [89] => date
+    [90] => timezone
+)
